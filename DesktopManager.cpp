@@ -4,12 +4,12 @@ using namespace cv;
 
 DesktopManager::DesktopManager(){
 }
-Desktopmanager::DesktopManager(string s){
-	DESKTOP_PATH = s;
+Desktopmanager::DesktopManager(char* imgPath){
+	DESKTOP_PATH = imgPath;
+	DESKTOP_IMAGE = imread(imgPath, CV_LOAD_IMAGE_COLOR);
 }
 Desktopmanager::DesktopManager(Mat m){
-	//To be fixed later
-	DESKTOP_IMAGE(2, 2, CV_8UC3, Scalar(0,0,255));
+	DESKTOP_IMAGE(m);
 }
 string DesktopManager::getDesktopImagePath(){
 	return DESKTOP_PATH;
