@@ -1,6 +1,7 @@
 #include "DesktopManager.h"
 
 using namespace cv;
+using namespace std;
 
 DesktopManager::DesktopManager(){
 }
@@ -13,4 +14,16 @@ Desktopmanager::DesktopManager(Mat m){
 }
 string DesktopManager::getDesktopImagePath(){
 	return DESKTOP_PATH;
+}
+
+int DesktopManager::getNumChannels(){
+	DESKTOP_IMAGE.channels();
+}
+
+int DesktopManager::getNumRows(){
+	DESKTOP_IMAGE.rows;
+}
+
+int DesktopManager::getNumCols(){
+	DESKTOP_IMAGE.cols * DESKTOP_IMAGE.channels();
 }

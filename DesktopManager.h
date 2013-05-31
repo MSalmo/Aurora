@@ -14,12 +14,12 @@ class DesktopManager {
 	private:
 		extern string DESKTOP_PATH;
 		Mat DESKTOP_IMAGE;
-		int nChannels;
-		int nRows;
-		int nCols;
 	public:
 		DesktopManager();
 		DesktopManager(string);
 		DesktopManager(Mat);
 		string getDesktopImagePath();
+		int getNumChannels();
+		int getNumRows();
+		int getNumCols();
 };
