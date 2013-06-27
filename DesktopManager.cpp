@@ -4,15 +4,19 @@ using namespace cv;
 using namespace std;
 using namespace boost;
 
-DesktopManager::DesktopManager(){
+DesktopManager::DesktopManager(int nThreads, time_t seed=NULL){
+	srand(time(seed));
 }
-Desktopmanager::DesktopManager(char* imgPath){
+Desktopmanager::DesktopManager(int nThreads, char* imgPath, time_t seed=NULL){
 	DESKTOP_PATH = imgPath;
 	DESKTOP_IMAGE = imread(imgPath, CV_LOAD_IMAGE_COLOR);
+	srand(time(seed));
 }
-Desktopmanager::DesktopManager(Mat m){
+Desktopmanager::DesktopManager(int nThreads, Mat m, time_t seed=NULL){
 	DESKTOP_IMAGE(m);
+	srand(time(seed));
 }
+
 string DesktopManager::getDesktopImagePath(){
 	return DESKTOP_PATH;
 }
@@ -27,4 +31,11 @@ int DesktopManager::getNumRows(){
 
 int DesktopManager::getNumCols(){
 	DESKTOP_IMAGE.cols * DESKTOP_IMAGE.channels();
+}
+
+int* DesktopManager::getRandPixel(){
+}
+
+int** DesktopManager::getCurArrPixels(){
+	return curArrPixels;
 }

@@ -1,13 +1,15 @@
 #ifndef DESKTOPMANAGER_H
 	#include <iostream>
 	#include <string>
+	#include <cv.h>
+	#include <thread.h>
+	#include <time.h>
 	#ifdef __WIN32
 	#endif
 	#ifdef __linux
-		#include <cv.h>
 		#include <highgui.h>
 		#include <boost/asio.hpp>
-		#include <thread>
+		#include <stdlib.h>
 	#endif
 	using namespace std;
 	using namespace cv;
@@ -15,16 +17,19 @@
 
 	class DesktopManager {
 		private:
-			extern string DESKTOP_PATH;
+			string DESKTOP_PATH;
 			Mat DESKTOP_IMAGE;
-			thread **threadPool;
+			thread** threadPool;
+			int** curArrPixels;
 		public:
-			DesktopManager();
-			DesktopManager(string);
-			DesktopManager(Mat);
-			string getDesktopImagePath();
+			DesktopManager(int, time_t);
+			DesktopManager(int, char*, time_t);
+			DesktopManager(int, Mat, time_t);
+			char* getDesktopImagePath();
 			int getNumChannels();
 			int getNumRows();
 			int getNumCols();
+			int* getRandPixel();
+			int** getCurArrPixels();
 	};
 #endif
