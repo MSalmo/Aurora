@@ -5,8 +5,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
 int pinRangeStart = 0;
 int pinRangeStop = 0;
 char inByte;
-uint8_t ledAddr;
-uint16_t *colorInfo;
+uint8_t* colorBytes;
 
 void setup(){
   Serial.begin(115200);
@@ -16,38 +15,35 @@ void setup(){
   
   strip.begin();
   strip.show();
-  
-  
-
 }
-void loop(){
-while(Serial.available() > 0){
+
+void loop(){  
+  while(Serial.available() > 0){
     inByte = Serial.read();
     switch(inByte){
-      case 'a': //Set start pin
-        pinRangeStart = Serial.read();
-        break;
-      case 'b': //Set stop pin
-        pinRangeStop = Serial.read();
-        if(pinRangeStart && pinRangeStop){
-          if(pinRangeStop < pinRangeStart){
-            int temp = pinRangeStop;
-            pinRangeStop = pinRangeStart;
-            pinRangeStart = temp;
-          }
-          break;
-        }
-      case 't': //Test case (light a single LED on the strip with a certain color)
-        colorInfo = new uint16_t[3];
-        ledAddr = Serial.read();
-        
-        colorInfo[0] = Serial.read(); //Red
-        colorInfo[1] = Serial.read(); //Green
-        colorInfo[2] = Serial.read(); //Blue
-        
-        strip.setColorAtPixel(ledAddr, strip.Color(colorInfo[0], colorInfo[1], colorInfo[2]));
-        
-        break;
+    case('t'): {
+        colorBytes = new uint8_t[4];
+        colorBytes[0] = Serial.parseInt(); //Red
+        Serial.print("R=");
+        Serial.println(colorBytes[0]);
+        Serial.read();
+        colorBytes[1] = Serial.parseInt(); //Green
+        Serial.print("G=");
+        Serial.println(colorBytes[1]);
+        Serial.read();
+        colorBytes[2] = Serial.parseInt(); //Blue
+        Serial.print("B=");
+        Serial.println(colorBytes[2]);   
+        Serial.read();
+        colorBytes[3] = Serial.parseInt();
+        Serial.print("LED=");
+        Serial.println(colorBytes[3]);
+
+      uint32_t color = strip.Color(colorBytes[0],colorBytes[1],colorBytes[2]);  
+      strip.setPixelColor(colorBytes[3], color);
+      strip.show();
+      break;
     }
+  }
   }  
 }
