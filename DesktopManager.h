@@ -4,6 +4,8 @@
 	#include <cv.h>
 	#include <thread.h>
 	#include <time.h>
+	#include <vector.h>
+	#include "LEDInfo.h"
 	#ifdef __WIN32
 	#endif
 	#ifdef __linux
@@ -21,6 +23,7 @@
 			Mat DESKTOP_IMAGE;
 			thread** threadPool;
 			int** curArrPixels;
+			vector<LEDInfo> ledVector;
 		public:
 			DesktopManager(int, time_t);
 			DesktopManager(int, char*, time_t);

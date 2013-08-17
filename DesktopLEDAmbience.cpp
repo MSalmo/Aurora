@@ -1,32 +1,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <avr/io.h>
+#include <termios.h>
 
-#define FOSC 16000000
-#define BAUD 115200
-#define MYUBRR (((((FOSC * 10) / (16L * BAUD)) + 5)/10))
-
+#define BAUD B115200
 using namespace std;
 
+struct termios old_io, new_io;
+int arduinoFD, c, res;
 char* rVal;
 char* bVal;
 char* gVal;
 char* ledAddr;
-void ioinit(void){
-	UBRR0H = MYUBRR >> 8;
-	UBRR0L = MYUBRR;
-	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
-}
+
 int main (int argc, char* argv[]) {
 	
-	int arduinoFD;
-	if(argc != 3){
-		fflush(stderr);
-		printf(stderr, "USAGE: ./" + argv[0] + " [#LEDs] [IMAGE_PATH]\n");
-		exit(EXIT_FAILURE);
-	}
-	int nLEDs = atoi(argv[1]);
+	arduinoFD = open(argv[1], O_RDWR | O_NOCTTY);
+	if (arduinoFD < 0){perror(argv[1]); exit(EXIT_FAILURE);}
 	//DesktopManager dm = new DesktopManager(nLEDs, argv[2]);	
 	while(true){
 		printf(stdout, "Enter LED String t[LED_ADDR][R][G][B]: ");

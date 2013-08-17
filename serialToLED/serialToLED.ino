@@ -21,44 +21,50 @@ void setup(){
 void loop(){  
   while(Serial.available() > 0){
     inByte = Serial.read();
-    switch(inByte){
-    case('t'): {
-        colorBytes = new uint8_t[4];
-        colorBytes[0] = Serial.parseInt(); //Red
-        Serial.print("R=");
-        Serial.println(colorBytes[0]);
-        Serial.read();
-        colorBytes[1] = Serial.parseInt(); //Green
-        Serial.print("G=");
-        Serial.println(colorBytes[1]);
-        Serial.read();
-        colorBytes[2] = Serial.parseInt(); //Blue
-        Serial.print("B=");
-        Serial.println(colorBytes[2]);   
-        Serial.read();
-        colorBytes[3] = Serial.parseInt();
-        Serial.print("LED=");
-        Serial.println(colorBytes[3]);
+    while(inByte != 13){
+      switch(inByte){
+        case('t'): {
+          colorBytes = new uint8_t[4];
+          colorBytes[0] = Serial.parseInt(); //Red
+          Serial.print("R=");
+          Serial.println(colorBytes[0]);
+          Serial.read();
+          colorBytes[1] = Serial.parseInt(); //Green
+          Serial.print("G=");
+          Serial.println(colorBytes[1]);
+          Serial.read();
+          colorBytes[2] = Serial.parseInt(); //Blue
+          Serial.print("B=");
+          Serial.println(colorBytes[2]);   
+          Serial.read();
+          colorBytes[3] = Serial.parseInt();
+          Serial.print("LED=");
+          Serial.println(colorBytes[3]);
 
-      colorShiftTo(colorBytes, 12);  
-      break;
+          colorShiftTo(colorBytes, 12);  
+          break;
+        }
+        case('r'): {
+          for(int i = 0 ; i < strip.numPixels(); i++)
+            strip.setPixelColor(i, strip.Color(0,0,0));
+          strip.show();
+          Serial.println("Reset!");
+          break;
+        }
+        case('d'): {
+          Serial.print("Debugging ");
+          debug =! debug;
+          if(!debug)  
+            Serial.println("DISABLED");
+          else
+            Serial.println("ENABLED");
+        }
+        case('z'): {
+          strip.show();
+          Serial.println("Updating Lights");
+        }
+      }
     }
-    case('r'): {
-      for(int i = 0 ; i < strip.numPixels(); i++)
-       strip.setPixelColor(i, strip.Color(0,0,0));
-       strip.show();
-       Serial.println("Reset!");
-      break;
-    }
-    case('d'): {
-      Serial.print("Debugging ");
-      debug =! debug;
-      if(!debug)  
-        Serial.println("DISABLED");
-      else
-        Serial.println("ENABLED");
-    }
-  }
   }  
 }
 void colorShiftTo(uint8_t* colorInfo, int mSecs){
