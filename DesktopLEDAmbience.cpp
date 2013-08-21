@@ -17,6 +17,13 @@ int main (int argc, char* argv[]) {
 	
 	arduinoFD = open(argv[1], O_RDWR | O_NOCTTY);
 	if (arduinoFD < 0){perror(argv[1]); exit(EXIT_FAILURE);}
+
+	new_io.c_cflag = BAUDRATE | CRTSCTS | CS8 | CLOCAL | CREAD;
+	new_io.c_iflag = IGNPAR | ICRNL;
+	new_io.c_oflag = 0;
+	new_io.c_lflag = ICANON
+
+	tcflush(arduinoFD, TCOFLUSH);
 	//DesktopManager dm = new DesktopManager(nLEDs, argv[2]);	
 	while(true){
 		printf(stdout, "Enter LED String t[LED_ADDR][R][G][B]: ");
