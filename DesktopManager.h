@@ -23,7 +23,6 @@
 			Mat DESKTOP_IMAGE;
 			thread** threadPool;
 			int** curArrPixels;
-			vector<LEDInfo> ledVector;
 		public:
 			DesktopManager(int, time_t);
 			DesktopManager(int, char*, time_t);

@@ -9,7 +9,7 @@ uint8_t* colorBytes;
 boolean debug = false;
 
 void setup(){
-  Serial.begin(115200);
+  Serial.begin(9600);
   while(!Serial);
   
   Serial.print("Desktop LED Ambience\n");
@@ -40,7 +40,6 @@ void loop(){
           colorBytes[3] = Serial.parseInt();
           Serial.print("LED=");
           Serial.println(colorBytes[3]);
-
           colorShiftTo(colorBytes, 12);  
           break;
         }
@@ -58,12 +57,18 @@ void loop(){
             Serial.println("DISABLED");
           else
             Serial.println("ENABLED");
+          break;
+        }
+        case('s'): {
+          Serial.println("Set lights without updating.");
         }
         case('z'): {
           strip.show();
           Serial.println("Updating Lights");
+          break;
         }
       }
+      inByte=13;
     }
   }  
 }
