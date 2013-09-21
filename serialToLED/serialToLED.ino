@@ -61,6 +61,25 @@ void loop(){
         }
         case('s'): {
           Serial.println("Set lights without updating.");
+                    colorBytes = new uint8_t[4];
+          colorBytes[0] = Serial.parseInt(); //Red
+          Serial.print("R=");
+          Serial.println(colorBytes[0]);
+          Serial.read();
+          colorBytes[1] = Serial.parseInt(); //Green
+          Serial.print("G=");
+          Serial.println(colorBytes[1]);
+          Serial.read();
+          colorBytes[2] = Serial.parseInt(); //Blue
+          Serial.print("B=");
+          Serial.println(colorBytes[2]);   
+          Serial.read();
+          colorBytes[3] = Serial.parseInt();
+          Serial.print("LED=");
+          Serial.println(colorBytes[3]);
+          uint32_t newColor = strip.Color(colorBytes[0], colorBytes[1], colorBytes[2]);
+          strip.setPixelColor(colorBytes[3], newColor);
+          break;
         }
         case('z'): {
           strip.show();

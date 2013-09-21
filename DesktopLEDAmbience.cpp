@@ -39,7 +39,7 @@ int main (int argc, char* argv[]) {
 	tcflush(arduinoFD, TCOFLUSH);
 	//DesktopManager dm = new DesktopManager(nLEDs, argv[2]);	
 	while(true){
-		printf("Enter LED String t[LED_ADDR][R][G][B]: \n");
+		/*printf("Enter LED String t[LED_ADDR][R][G][B]: \n");
 		printf("Enter LED Number: ");
 		fread(ledAddr, 4, 1, stdin);	//read LED #
 		fflush(stdin);
@@ -52,16 +52,17 @@ int main (int argc, char* argv[]) {
 		printf("Enter desired blue value: ");
 		fread(bVal, 4, 1, stdin);		//read blue value
 		fflush(stdin);
-		
+		*/
 		char* testWrite = (char*)malloc(17);
 		for(int i = 0 ; i < 240; i++) {
-			string full = "255";
-			string blank = "s255,000,000,";
-			blank += i;
-			blank += "\n";
-			write(arduinoFD, testWrite, 17);
-
+			string blank = "s255,000,000," + i + "\n";
+			write(arduinoFD, blank.c_str(), 17);
+			blank = "z\n";
+			sleep(1);
+			write(arduinoFD, blank.c_str(), 2);
 		}
+		string reset = "r\n";
+		write(arduinoFD, reset.c_str(), 2);
 		/*testWrite[0]='t';
 		strncpy(testWrite+1,rVal, 3);
 		strncpy(testWrite+4,delim, 1);
