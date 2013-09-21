@@ -61,7 +61,7 @@ void loop(){
         }
         case('s'): {
           Serial.println("Set lights without updating.");
-                    colorBytes = new uint8_t[4];
+          colorBytes = new uint8_t[4];
           colorBytes[0] = Serial.parseInt(); //Red
           Serial.print("R=");
           Serial.println(colorBytes[0]);

@@ -39,7 +39,8 @@ int main (int argc, char* argv[]) {
 	tcflush(arduinoFD, TCOFLUSH);
 	//DesktopManager dm = new DesktopManager(nLEDs, argv[2]);	
 	while(true){
-		/*printf("Enter LED String t[LED_ADDR][R][G][B]: \n");
+		/*
+		printf("Enter LED String t[LED_ADDR][R][G][B]: \n");
 		printf("Enter LED Number: ");
 		fread(ledAddr, 4, 1, stdin);	//read LED #
 		fflush(stdin);
@@ -53,16 +54,21 @@ int main (int argc, char* argv[]) {
 		fread(bVal, 4, 1, stdin);		//read blue value
 		fflush(stdin);
 		*/
-		char* testWrite = (char*)malloc(17);
 		for(int i = 0 ; i < 240; i++) {
-			string blank = "s255,000,000," + i + "\n";
-			write(arduinoFD, blank.c_str(), 17);
-			blank = "z\n";
+			char* testWrite = (char*)malloc(17);
+			sprintf(testWrite, "s255,000,000,%03d\n", i);
+			fwrite(testWrite,17,1,stdout);
+			//write(arduinoFD, testWrite, 17);
 			sleep(1);
-			write(arduinoFD, blank.c_str(), 2);
+			free(testWrite);
+			testWrite = (char*)malloc(2);
+			sprintf(testWrite,"z\n",NULL);
+			fwrite(testWrite,2,1,stdout);
+			//write(arduinoFD, testWrite, 2);
+			free(testWrite);
 		}
-		string reset = "r\n";
-		write(arduinoFD, reset.c_str(), 2);
+		//string reset = "r\n";
+		//write(arduinoFD, reset.c_str(), 2);
 		/*testWrite[0]='t';
 		strncpy(testWrite+1,rVal, 3);
 		strncpy(testWrite+4,delim, 1);
@@ -76,7 +82,7 @@ int main (int argc, char* argv[]) {
 		fwrite(testWrite,17,1,stdout);
 		fflush(stdout);
 		write(arduinoFD, testWrite, 17);*/
-		free(testWrite);
+		//free(testWrite);
 	}
 
 }
