@@ -6,9 +6,11 @@
 #include <fcntl.h>
 #include <fstream>
 #include <iostream>
+#include <time.h>
 
 #define BAUD B9600
 #define ARDUINO "/dev/ttyACM0"
+#define UPDATE_CMD "z\n"
 
 using namespace std;
 
@@ -21,7 +23,8 @@ char* ledAddr;
 char* delim;
 
 int main (int argc, char* argv[]) {
-	
+	srand(time(NULL));
+
 	arduinoFD = open(ARDUINO, O_RDWR | O_NOCTTY);
 	if (arduinoFD < 0){perror(ARDUINO); exit(EXIT_FAILURE);}
 	rVal = (char*)malloc(4);
@@ -54,19 +57,15 @@ int main (int argc, char* argv[]) {
 		fread(bVal, 4, 1, stdin);		//read blue value
 		fflush(stdin);
 		*/
-		for(int i = 0 ; i < 240; i++) {
 			char* testWrite = (char*)malloc(17);
-			sprintf(testWrite, "s255,000,000,%03d\n", i);
+			sprintf(testWrite, "t%03d,%03d,%03d,%03d\n", 
+						rand()%256, rand()%256, rand()%256, rand()%240);
 			fwrite(testWrite,17,1,stdout);
-			//write(arduinoFD, testWrite, 17);
-			sleep(1);
+			write(arduinoFD, testWrite, 17);
 			free(testWrite);
-			testWrite = (char*)malloc(2);
-			sprintf(testWrite,"z\n",NULL);
-			fwrite(testWrite,2,1,stdout);
-			//write(arduinoFD, testWrite, 2);
-			free(testWrite);
-		}
+			fwrite(UPDATE_CMD,2,1,stdout);
+			write(arduinoFD, UPDATE_CMD, 2);
+			sleep(5);
 		//string reset = "r\n";
 		//write(arduinoFD, reset.c_str(), 2);
 		/*testWrite[0]='t';
