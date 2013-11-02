@@ -5,42 +5,51 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
 int pinRangeStart = 0;
 int pinRangeStop = 0;
 char inByte;
-uint8_t* colorBytes;
+byte* colorBytes;
 boolean debug = false;
 
 void setup(){
-  Serial.begin(9600);
+  Serial.begin(115200);
   while(!Serial);
   
   Serial.print("Desktop LED Ambience\n");
-  
+  Serial.setTimeout(1000);
   strip.begin();
   strip.show();
 }
 
 void loop(){  
   while(Serial.available() > 0){
-    inByte = Serial.read();
-    while(inByte != 13){
+    while(Serial.read() != 0x30);
+    Serial.print("Start Byte read!");
+    
+    while(true){
+      while(!Serial.available());
+      inByte = Serial.read();
+      delay(1);
       switch(inByte){
         case('t'): {
-          colorBytes = new uint8_t[4];
-          colorBytes[0] = Serial.parseInt(); //Red
-          Serial.print("R=");
-          Serial.println(colorBytes[0]);
-          Serial.read();
-          colorBytes[1] = Serial.parseInt(); //Green
-          Serial.print("G=");
-          Serial.println(colorBytes[1]);
-          Serial.read();
-          colorBytes[2] = Serial.parseInt(); //Blue
-          Serial.print("B=");
-          Serial.println(colorBytes[2]);   
-          Serial.read();
-          colorBytes[3] = Serial.parseInt();
-          Serial.print("LED=");
-          Serial.println(colorBytes[3]);
+          colorBytes = new byte[4];
+          //Replace Serial.parseInt() with Serial.read() once we fix
+          //the C++ program.
+          for(int i = 0 ; i < 4; i++){
+            while(!Serial.available());
+            colorBytes[0] = Serial.read();
+            delay(1);
+            Serial.flush();
+          }
+          if(debug){
+            Serial.print("R=");
+            Serial.println(colorBytes[0]);
+            Serial.print("G=");
+            Serial.println(colorBytes[1]);
+            Serial.print("B=");
+            Serial.println(colorBytes[2]);
+            Serial.print("LED=");
+            Serial.println(colorBytes[3]);
+          }
           colorShiftTo(colorBytes, 12);  
+          free(colorBytes);
           break;
         }
         case('r'): {
@@ -48,6 +57,7 @@ void loop(){
             strip.setPixelColor(i, strip.Color(0,0,0));
           strip.show();
           Serial.println("Reset!");
+          Serial.flush();
           break;
         }
         case('d'): {
@@ -60,34 +70,38 @@ void loop(){
           break;
         }
         case('s'): {
-          Serial.println("Set lights without updating.");
-          colorBytes = new uint8_t[4];
-          colorBytes[0] = Serial.parseInt(); //Red
-          Serial.print("R=");
-          Serial.println(colorBytes[0]);
-          Serial.read();
-          colorBytes[1] = Serial.parseInt(); //Green
-          Serial.print("G=");
-          Serial.println(colorBytes[1]);
-          Serial.read();
-          colorBytes[2] = Serial.parseInt(); //Blue
-          Serial.print("B=");
-          Serial.println(colorBytes[2]);   
-          Serial.read();
-          colorBytes[3] = Serial.parseInt();
-          Serial.print("LED=");
-          Serial.println(colorBytes[3]);
+          colorBytes = new byte[4];
+          for (int i = 0 ; i < 4 ; i++){
+            while(!Serial.available());
+            colorBytes[i]= Serial.read();
+            delay(1);
+            
+        }
+
+          if(debug){
+            Serial.println("Set lights without updating.");
+            Serial.print("R=");
+            Serial.println(colorBytes[0]);
+            Serial.print("G=");
+            Serial.println(colorBytes[1]);
+            Serial.print("B=");
+            Serial.println(colorBytes[2]);
+            Serial.print("LED=");
+            Serial.println(colorBytes[3]);
+          }
           uint32_t newColor = strip.Color(colorBytes[0], colorBytes[1], colorBytes[2]);
           strip.setPixelColor(colorBytes[3], newColor);
+          free(colorBytes);
           break;
         }
         case('z'): {
           strip.show();
           Serial.println("Updating Lights");
+          Serial.flush();
+          delay(50);
           break;
         }
       }
-      inByte=13;
     }
   }  
 }
@@ -226,6 +240,7 @@ void colorShiftTo(uint8_t* colorInfo, int mSecs){
     delay(mSecs);
   } 
   Serial.println("Done!");
+  Serial.flush();
 }
 
 

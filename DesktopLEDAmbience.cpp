@@ -3,36 +3,26 @@
 #include <string.h>
 #include <unistd.h>
 #include <termios.h>
+#include <inttypes.h>
 #include <fcntl.h>
 #include <fstream>
 #include <iostream>
 #include <time.h>
 
-#define BAUD B9600
+#define BAUD B115200
 #define ARDUINO "/dev/ttyACM0"
-#define UPDATE_CMD "z\n"
 
 using namespace std;
 
 struct termios old_io, new_io;
 int arduinoFD, c, res;
-char* rVal;
-char* bVal;
-char* gVal;
-char* ledAddr;
-char* delim;
 
 int main (int argc, char* argv[]) {
 	srand(time(NULL));
 
 	arduinoFD = open(ARDUINO, O_RDWR | O_NOCTTY);
 	if (arduinoFD < 0){perror(ARDUINO); exit(EXIT_FAILURE);}
-	rVal = (char*)malloc(4);
-	gVal = (char*)malloc(4);
-	bVal = (char*)malloc(4);
-	ledAddr = (char*)malloc(4);
-	delim = (char*)malloc(1);
-	delim[0] = ',';
+
 	new_io.c_cflag = BAUD | CRTSCTS | CS8 | CLOCAL | CREAD;
 	new_io.c_iflag = IGNPAR | ICRNL;
 	new_io.c_oflag = 0;
@@ -41,47 +31,31 @@ int main (int argc, char* argv[]) {
 	cfsetispeed(&new_io, BAUD);
 	tcflush(arduinoFD, TCOFLUSH);
 	//DesktopManager dm = new DesktopManager(nLEDs, argv[2]);	
+	uint8_t* STARTCMD = (uint8_t*)malloc(1);
+	STARTCMD[0]=0x30;
+	write(arduinoFD, STARTCMD, 1);
 	while(true){
-		/*
-		printf("Enter LED String t[LED_ADDR][R][G][B]: \n");
-		printf("Enter LED Number: ");
-		fread(ledAddr, 4, 1, stdin);	//read LED #
-		fflush(stdin);
-		printf("Enter desired red value: ");
-		fread(rVal, 4, 1, stdin);		//read red value
-		fflush(stdin);
-		printf("Enter desired green value: ");
-		fread(gVal, 4, 1, stdin);		//read green value
-		fflush(stdin);
-		printf("Enter desired blue value: ");
-		fread(bVal, 4, 1, stdin);		//read blue value
-		fflush(stdin);
-		*/
-			char* testWrite = (char*)malloc(17);
-			sprintf(testWrite, "t%03d,%03d,%03d,%03d\n", 
-						rand()%256, rand()%256, rand()%256, rand()%240);
-			fwrite(testWrite,17,1,stdout);
-			write(arduinoFD, testWrite, 17);
+		uint8_t* testWrite = (uint8_t*)malloc(5);
+			for(uint8_t i = 0; i < 240; i++){
+				testWrite[0] = (uint8_t)'s';
+				testWrite[1] = (uint8_t)rand()%256;
+				testWrite[2] = (uint8_t)rand()%256;
+				testWrite[3] = (uint8_t)rand()%256;
+				testWrite[4] = (uint8_t)i;
+				char* outPrint = (char*)malloc(17);
+				sprintf(outPrint, "R%03dG%03dB%03dL%03d\n",
+					testWrite[1], testWrite[2], testWrite[3], testWrite[4]);
+				fwrite(outPrint,17,1,stdout);
+				write(arduinoFD, testWrite, 5);
+				usleep(28*1000);
+			}
 			free(testWrite);
-			fwrite(UPDATE_CMD,2,1,stdout);
-			write(arduinoFD, UPDATE_CMD, 2);
-			sleep(5);
-		//string reset = "r\n";
-		//write(arduinoFD, reset.c_str(), 2);
-		/*testWrite[0]='t';
-		strncpy(testWrite+1,rVal, 3);
-		strncpy(testWrite+4,delim, 1);
-		strncpy(testWrite+5,gVal, 3);
-		strncpy(testWrite+8,delim, 1);
-		strncpy(testWrite+9,bVal, 3);
-		strncpy(testWrite+12,delim, 1);
-		strncpy(testWrite+13, ledAddr, 3);
-		testWrite[16]='\n';
-		fflush(stdout);
-		fwrite(testWrite,17,1,stdout);
-		fflush(stdout);
-		write(arduinoFD, testWrite, 17);*/
-		//free(testWrite);
+			testWrite = (uint8_t*)malloc(1);
+			testWrite[0] = (uint8_t)'z';
+			write(arduinoFD, testWrite, 1);
+			free(testWrite);
+			usleep(500*1000);
+			
 	}
 
 }
