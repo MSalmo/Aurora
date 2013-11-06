@@ -9,7 +9,7 @@
 #include <iostream>
 #include <time.h>
 
-#define BAUD B115200
+#define BAUD B38400
 #define ARDUINO "/dev/ttyACM0"
 
 using namespace std;
@@ -30,32 +30,35 @@ int main (int argc, char* argv[]) {
 	cfsetospeed(&new_io, BAUD);
 	cfsetispeed(&new_io, BAUD);
 	tcflush(arduinoFD, TCOFLUSH);
+
+	//I only need 1 byte in order to acknowledge that the arduino needs
+   //another set of colors for the next light.
+	new_io.c_cc[VMIN] = 1;
+	new_io.c_cc[VTIME] = 0;
+
 	//DesktopManager dm = new DesktopManager(nLEDs, argv[2]);	
 	uint8_t* STARTCMD = (uint8_t*)malloc(1);
 	STARTCMD[0]=0x30;
 	write(arduinoFD, STARTCMD, 1);
 	while(true){
-		uint8_t* testWrite = (uint8_t*)malloc(5);
+		uint8_t* testWrite = (uint8_t*)malloc(6);
 			for(uint8_t i = 0; i < 240; i++){
 				testWrite[0] = (uint8_t)'s';
 				testWrite[1] = (uint8_t)rand()%256;
 				testWrite[2] = (uint8_t)rand()%256;
 				testWrite[3] = (uint8_t)rand()%256;
 				testWrite[4] = (uint8_t)i;
+				testWrite[5] = (uint8_t)'z';
 				char* outPrint = (char*)malloc(17);
 				sprintf(outPrint, "R%03dG%03dB%03dL%03d\n",
 					testWrite[1], testWrite[2], testWrite[3], testWrite[4]);
 				fwrite(outPrint,17,1,stdout);
-				write(arduinoFD, testWrite, 5);
-				usleep(28*1000);
+				//set_rts(arduinoFD);
+				write(arduinoFD, testWrite, 6);
+				tcdrain(arduinoFD);
+				//clr_rts(arduinoFD);
 			}
 			free(testWrite);
-			testWrite = (uint8_t*)malloc(1);
-			testWrite[0] = (uint8_t)'z';
-			write(arduinoFD, testWrite, 1);
-			free(testWrite);
-			usleep(500*1000);
-			
 	}
 
 }

@@ -9,7 +9,7 @@ byte* colorBytes;
 boolean debug = false;
 
 void setup(){
-  Serial.begin(115200);
+  Serial.begin(38400);
   while(!Serial);
   
   Serial.print("Desktop LED Ambience\n");
@@ -98,7 +98,7 @@ void loop(){
           strip.show();
           Serial.println("Updating Lights");
           Serial.flush();
-          delay(50);
+          delay(1);
           break;
         }
       }
