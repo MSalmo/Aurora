@@ -1,9 +1,10 @@
 #ifndef LEDINFO_H
+	#include "Timer.h"
 #define LEDINFO_H
 struct LEDInfo {
 	short ledNum;
-	short delay;
-	short remDelay;
+	Timer remDelay;
+	bool notifyReady;
 	short* curColor;
 };
 struct ActiveLEDInfo : LEDInfo {

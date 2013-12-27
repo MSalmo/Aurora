@@ -1,6 +1,7 @@
 #include <Adafruit_NeoPixel.h>
+#include "Timer.h"
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
+jjjAdafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
 
 int pinRangeStart = 0;
 int pinRangeStop = 0;
@@ -9,7 +10,7 @@ byte* colorBytes;
 boolean debug = false;
 
 void setup(){
-  Serial.begin(38400);
+  Serial.begin(115200);
   while(!Serial);
   
   Serial.print("Desktop LED Ambience\n");
@@ -28,10 +29,9 @@ void loop(){
       inByte = Serial.read();
       delay(1);
       switch(inByte){
-        case('t'): {
+        case('t'): { //Invoke the blend algorithm on a LED
           colorBytes = new byte[4];
-          //Replace Serial.parseInt() with Serial.read() once we fix
-          //the C++ program.
+          
           for(int i = 0 ; i < 4; i++){
             while(!Serial.available());
             colorBytes[0] = Serial.read();
@@ -52,7 +52,7 @@ void loop(){
           free(colorBytes);
           break;
         }
-        case('r'): {
+        case('r'): { //Reset all LEDs to (R,G,B)=(0,0,0)
           for(int i = 0 ; i < strip.numPixels(); i++)
             strip.setPixelColor(i, strip.Color(0,0,0));
           strip.show();
@@ -60,7 +60,7 @@ void loop(){
           Serial.flush();
           break;
         }
-        case('d'): {
+        case('d'): { //Enable or disable debug flag.
           Serial.print("Debugging ");
           debug =! debug;
           if(!debug)  
@@ -69,7 +69,7 @@ void loop(){
             Serial.println("ENABLED");
           break;
         }
-        case('s'): {
+        case('s'): { //Update the colors of an LED in the buffer.
           colorBytes = new byte[4];
           for (int i = 0 ; i < 4 ; i++){
             while(!Serial.available());
@@ -94,7 +94,7 @@ void loop(){
           free(colorBytes);
           break;
         }
-        case('z'): {
+        case('z'): { //Update the LEDs with any new values in the buffer.
           strip.show();
           Serial.println("Updating Lights");
           Serial.flush();

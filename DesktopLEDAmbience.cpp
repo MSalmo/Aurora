@@ -8,8 +8,9 @@
 #include <fstream>
 #include <iostream>
 #include <time.h>
-
-#define BAUD B38400
+#include "LEDStrip.h"
+#include <vector>
+#define BAUD B115200
 #define ARDUINO "/dev/ttyACM0"
 
 using namespace std;
@@ -53,10 +54,11 @@ int main (int argc, char* argv[]) {
 				sprintf(outPrint, "R%03dG%03dB%03dL%03d\n",
 					testWrite[1], testWrite[2], testWrite[3], testWrite[4]);
 				fwrite(outPrint,17,1,stdout);
-				//set_rts(arduinoFD);
-				write(arduinoFD, testWrite, 6);
+				//set_rts(arduinoFD, 0);
 				tcdrain(arduinoFD);
-				//clr_rts(arduinoFD);
+				write(arduinoFD, testWrite, 6);
+				usleep(17.5 * 1000);
+				//set_rts(arduinoFD, 1);
 			}
 			free(testWrite);
 	}
