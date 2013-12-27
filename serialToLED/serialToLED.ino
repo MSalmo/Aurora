@@ -1,7 +1,8 @@
 #include <Adafruit_NeoPixel.h>
 #include "Timer.h"
+#include "Event.h"
 
-jjjAdafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
 
 int pinRangeStart = 0;
 int pinRangeStop = 0;

@@ -1,0 +1,34 @@
+#######################################
+# Syntax Coloring Map For Timer Library
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+LEDStrip	KEYWORD1
+LEDInfo	KEYWORD1
+ActiveLEDInfo KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+activeLEDs	KEYWORD2
+inactiveLEDs	KEYWORD2
+searchActive	KEYWORD2
+searchInactive	KEYWORD2
+getActiveLEDIndex KEYWORD2
+initialize	KEYWORD2
+fadeAllToBlack	KEYWORD2
+reColorize	KEYWORD2
+moveToActive KEYWORD2
+moveToInactive KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
