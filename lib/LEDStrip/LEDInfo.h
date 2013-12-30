@@ -6,6 +6,7 @@ struct LEDInfo {
 	Timer remDelay;
 	bool notifyReady;
 	short* curColor;
+	LEDInfo* next;
 };
 struct ActiveLEDInfo : LEDInfo {
 	float* step;

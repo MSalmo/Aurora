@@ -1,13 +1,12 @@
 #ifndef LEDSTRIP_H
 #define LEDSTRIP_H
 #endif
-#include <vector>
 #include "LEDInfo.h"
 using namespace std;
 class LEDStrip {
 	private:
-		vector< LEDInfo* > inactiveLEDs;
-		vector< ActiveLEDInfo* > activeLEDs;
+		LEDInfo* inactiveLEDs;
+		ActiveLEDInfo* activeLEDs;
 		ActiveLEDInfo* searchActive(int, int);
 		LEDInfo* searchInactive(int);
 		int getActiveLEDIndex(int);
@@ -19,6 +18,7 @@ class LEDStrip {
 	public:
 		LEDStrip();
 		~LEDStrip();
-		vector<ActiveLEDInfo*>* getActiveLEDs();
+		ActiveLEDInfo* getActiveLEDs();
+		LEDInfo* getInactiveLEDs();
 		void processStep();
 };
