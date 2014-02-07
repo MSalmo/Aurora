@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 #include "Timer.h"
 #include "Event.h"
-
+#include "LEDStrip.h"
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
 
 int pinRangeStart = 0;
@@ -106,19 +106,23 @@ void loop(){
     }
   }  
 }
+//Color shift algorithm that calculates the slope and processes the step.
+//TODO: make this return a float array representing the slope values for the RGB LED
 void colorShiftTo(uint8_t* colorInfo, int mSecs){
+  ActiveLEDInfo activeLED;
+  activeLED.curColor = new uint8_t[];
   uint32_t curColor = strip.getPixelColor(colorInfo[3]);
   
   uint8_t *oldCols = new uint8_t[3];
   int *deltas = new int[3];
   
-  oldCols[2] = curColor % 256;        //Old Blue Value
+  activeLED.curColor[2] = curColor % 256;        //Old Blue Value
   deltas[2] = (int)colorInfo[2] - (int)oldCols[2];
   
-  oldCols[1] = (curColor >> 8) % 256; //Old Green Value
+  activeLED.curColor[1] = (curColor >> 8) % 256; //Old Green Value
   deltas[1] = (int)colorInfo[1] - (int)oldCols[1];
   
-  oldCols[0] = (curColor >> 16) % 256;//Old Red Value
+  activeLED.curColor[0] = (curColor >> 16) % 256;//Old Red Value
   deltas[0] = (int)colorInfo[0] - (int)oldCols[0];
 
   if(debug){  

@@ -8,7 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <time.h>
-#include "LEDStrip.h"
+//#include "LEDStrip.h"
 #include <vector>
 #define BAUD B115200
 #define ARDUINO "/dev/ttyACM0"
