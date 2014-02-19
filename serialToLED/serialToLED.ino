@@ -1,8 +1,16 @@
+#include <LEDStrip.h>
+#include <LEDInfo.h>
+#include <ActiveLEDInfo.h>
+
 #include <Adafruit_NeoPixel.h>
+
+
 #include "Timer.h"
 #include "Event.h"
-#include "LEDStrip.h"
+
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
+ActiveLEDInfo* activeStart;
+LEDInfo* inactiveStart;
 
 int pinRangeStart = 0;
 int pinRangeStop = 0;
@@ -109,137 +117,113 @@ void loop(){
 //Color shift algorithm that calculates the slope and processes the step.
 //TODO: make this return a float array representing the slope values for the RGB LED
 void colorShiftTo(uint8_t* colorInfo, int mSecs){
-  ActiveLEDInfo activeLED;
-  activeLED.curColor = new uint8_t[];
-  uint32_t curColor = strip.getPixelColor(colorInfo[3]);
-  
-  uint8_t *oldCols = new uint8_t[3];
-  int *deltas = new int[3];
+  ActiveLEDInfo activeLED = ActiveLEDInfo();
+  activeLED.setTargetColor((uint32_t)colorInfo);
+  activeLED.setStepValues();
+
+  /*int *deltas = new int[3];
   
   activeLED.curColor[2] = curColor % 256;        //Old Blue Value
-  deltas[2] = (int)colorInfo[2] - (int)oldCols[2];
+  deltas[2] = (int)colorInfo[2] - (int)activeLED.curColor[2];
   
   activeLED.curColor[1] = (curColor >> 8) % 256; //Old Green Value
-  deltas[1] = (int)colorInfo[1] - (int)oldCols[1];
+  deltas[1] = (int)colorInfo[1] - (int)activeLED.curColor[1];
   
   activeLED.curColor[0] = (curColor >> 16) % 256;//Old Red Value
-  deltas[0] = (int)colorInfo[0] - (int)oldCols[0];
-
+  deltas[0] = (int)colorInfo[0] - (int)activeLED.curColor[0];
+*/
   if(debug){  
     Serial.print("OldRED=");
-    Serial.print(oldCols[0]);
+    Serial.print(activeLED.curColor[0]);
     Serial.print(" OldGREEN=");
-    Serial.print(oldCols[1]);
+    Serial.print(activeLED.curColor[1]);
     Serial.print(" OldBLUE=");
-    Serial.println(oldCols[2]);
- 
+    Serial.println(activeLED.curColor[2]);
+
     Serial.print("Target RED=");
-    Serial.print(colorInfo[0]);
+    Serial.print(activeLED.tgtColor[0]);
     Serial.print(" Target GREEN=");
-    Serial.print(colorInfo[1]);
+    Serial.print(activeLED.tgtColor[1]);
     Serial.print(" Target BLUE=");
-    Serial.println(colorInfo[2]); 
+    Serial.println(activeLED.tgtColor[2]); 
   
     Serial.print("Delta RED=");
-    Serial.print(deltas[0]);
+    Serial.print(activeLED.deltas[0]);
     Serial.print(" Delta GREEN=");
-    Serial.print(deltas[1]);
+    Serial.print(activeLED.deltas[1]);
     Serial.print(" Delta BLUE=");
-    Serial.println(deltas[2]); 
+    Serial.println(activeLED.deltas[2]); 
   }
-  int absDelta0 = abs(deltas[0]);
-  int absDelta1 = abs(deltas[1]);
-  int absDelta2 = abs(deltas[2]);
-  int farthest = max(max(absDelta0,absDelta1),absDelta2);
   
-  Serial.print("Farthest delta=");
-  Serial.println(farthest);
-  
-  //Flip the denom and the num, use modf to extract carryover.
-  float carryValR = (1.0f*deltas[0]/farthest);
-  float carryValG = (1.0f*deltas[1]/farthest); 
-  float carryValB = (1.0f*deltas[2]/farthest);
-  
-  double stepR, stepG, stepB;
-  
-  carryValR = modf(carryValR, &stepR);
-  carryValG = modf(carryValG, &stepG);
-  carryValB = modf(carryValB, &stepB);
-  if(carryValR < 0)
-    stepR = 0 - stepR;
-  if(carryValG < 0)
-    stepG = 0 - stepG;
-  if(carryValB < 0)
-    stepB = 0 - stepB;
   if(debug){
     Serial.print("StepVal(Red)=");
-    Serial.print(stepR);
+    Serial.print(activeLED.step[0]);
     Serial.print(" StepVal(Green)=");
-    Serial.print(stepG);
+    Serial.print(activeLED.step[1]);
     Serial.print(" StepVal(Blue)=");
-    Serial.println(stepB);
+    Serial.println(activeLED.step[2]);
   
     Serial.print("CarryVal(Red)=");
-    Serial.print(carryValR);
+    Serial.print(activeLED.carryOver[0]);
     Serial.print(" CarryVal(Green)=");
-    Serial.print(carryValG);
+    Serial.print(activeLED.carryOver[1]);
     Serial.print(" CarryVal(Blue)=");
-    Serial.println(carryValB);
+    Serial.println(activeLED.carryOver[2]);
   }
   double toSkipB = 0.0f;
   double toSkipG = 0.0f;
   double toSkipR = 0.0f;
   uint32_t targetColor = strip.Color(colorInfo[0], colorInfo[1], colorInfo[2]);
-  while( targetColor != strip.getPixelColor(colorInfo[3])){
-    if(colorInfo[0] != oldCols[0]){
-      oldCols[0] = oldCols[0] + stepR;
+  while( activeLED.tgtColorAsUINT32 != strip.getPixelColor(colorInfo[3])){
+    if(activeLED.tgtColor[0] != activeLED.curColor[0]){
+      activeLED.curColor[0] = activeLED.curColor[0] + activeLED.step[0];
       
-      toSkipR += carryValR;
+      toSkipR += activeLED.carryOver[0];
       if(toSkipR >= 1.0){
-        oldCols[0]++;
+        activeLED.curColor[0]++;
         toSkipR--;
       }
       if(toSkipR <= -1.0){
-        oldCols[0]--;
+        activeLED.curColor[0]--;
         toSkipR++;
       }
     }
-    if(colorInfo[1] != oldCols[1]){
-      oldCols[1] = oldCols[1] + stepG;
-      toSkipG += carryValG;
+    if(colorInfo[1] != activeLED.curColor[1]){
+      activeLED.curColor[1] = activeLED.curColor[1] + activeLED.step[1];
+      toSkipG += activeLED.carryOver[1];
       
       if(toSkipG >= 1.0){
-        oldCols[1]++;
+        activeLED.curColor[1]++;
         toSkipG--;
       }
       if(toSkipG <= -1.0){
-        oldCols[1]--;
+        activeLED.curColor[1]--;
         toSkipG++;
       }    
     }
-    if(colorInfo[2] != oldCols[2]){
-      oldCols[2] = oldCols[2] + stepB;
+    if(colorInfo[2] != activeLED.curColor[2]){
+      activeLED.curColor[2] = activeLED.curColor[2] + activeLED.step[2];
       
-      toSkipB += carryValB;
+      toSkipB += activeLED.carryOver[2];
     
       if(toSkipB >= 1.0){
-        oldCols[2]++;
+        activeLED.curColor[2]++;
         toSkipB--;
       }
       if(toSkipB <= -1.0){
-        oldCols[2]--;
+        activeLED.curColor[2]--;
         toSkipB++;
       }
     }
     if(debug){
       Serial.print("NewRED=");
-      Serial.print(oldCols[0]);
+      Serial.print(activeLED.curColor[0]);
       Serial.print(" NewGREEN=");
-      Serial.print(oldCols[1]);
+      Serial.print(activeLED.curColor[1]);
       Serial.print(" NewBLUE=");
-      Serial.println(oldCols[2]);
+      Serial.println(activeLED.curColor[2]);
     } 
-    uint32_t newColor = strip.Color(oldCols[0], oldCols[1], oldCols[2]);
+    uint32_t newColor = strip.Color(activeLED.curColor[0], activeLED.curColor[1], activeLED.curColor[2]);
     strip.setPixelColor(colorInfo[3], newColor);
     strip.show();
     delay(mSecs);

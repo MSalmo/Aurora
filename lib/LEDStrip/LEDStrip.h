@@ -1,7 +1,7 @@
 #ifndef LEDSTRIP_H
 #define LEDSTRIP_H
-#endif
 #include "LEDInfo.h"
+#include "ActiveLEDInfo.h"
 using namespace std;
 class LEDStrip {
 	private:
@@ -22,3 +22,4 @@ class LEDStrip {
 		LEDInfo* getInactiveLEDs();
 		void processStep();
 };
+#endif

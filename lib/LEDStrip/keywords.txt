@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For Timer Library
+# Syntax Coloring Map For LEDInfo Library
 #######################################
 
 #######################################
@@ -24,8 +24,14 @@ fadeAllToBlack	KEYWORD2
 reColorize	KEYWORD2
 moveToActive KEYWORD2
 moveToInactive KEYWORD2
+step	KEYWORD2
+deltas	KEYWORD2
+carryOver	KEYWORD2
+extractColorInfo	KEYWORD2
+setTargetColor		KEYWORD2
+setStepValues	KEYWORD2
 
-#######################################
+######################################
 # Instances (KEYWORD2)
 #######################################
 
