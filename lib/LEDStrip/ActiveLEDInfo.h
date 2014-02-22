@@ -3,7 +3,7 @@
 #define ACTIVELEDINFO_H
 class ActiveLEDInfo : public LEDInfo {
 	public:
-		float* step;
+		double* step;
 		float* deltas;
 		float* carryOver;
 		uint8_t* tgtColor;
@@ -13,5 +13,6 @@ class ActiveLEDInfo : public LEDInfo {
 		~ActiveLEDInfo();
 		void setTargetColor(uint32_t);
 		void setStepValues();
+		void processStep();
 };
 #endif

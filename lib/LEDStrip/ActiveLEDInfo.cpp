@@ -2,7 +2,7 @@
 /* ActiveLEDInfo Declarations */
 
 ActiveLEDInfo::ActiveLEDInfo(){
-	step = new float[3];
+	step = new double[3];
 	deltas = new float[3];
 	carryOver = new float[3];
 }
@@ -48,9 +48,9 @@ void ActiveLEDInfo::setStepValues() {
   		float carryValB = (1.0f*deltas[2]/farthest);
   
   
-  		carryOver[0] = modf(carryValR, (double)step[0]);
-  		carryOver[1] = modf(carryValG, (double)step[1]);
-  		carryOver[2] = modf(carryValB, (double)step[2]);
+  		carryOver[0] = modf(carryValR, &(step[0]));
+  		carryOver[1] = modf(carryValG, &(step[1]));
+  		carryOver[2] = modf(carryValB, &(step[2]));
 
 		if(carryValR < 0)
     		step[0] = 0 - step[0];
@@ -58,4 +58,46 @@ void ActiveLEDInfo::setStepValues() {
     		step[1] = 0 - step[1];
   		if(carryValB < 0)
     		step[2] = 0 - step[2]; 
+}
+void ActiveLEDInfo::processStep(){
+	if(tgtColor[0] != curColor[0]){
+      curColor[0] = curColor[0] + step[0];
+      
+      toSkipR += carryOver[0];
+      if(toSkipR >= 1.0){
+        curColor[0]++;
+        toSkipR--;
+      }
+      if(toSkipR <= -1.0){
+        curColor[0]--;
+        toSkipR++;
+      }
+    }
+    if(tgtColor[1] != curColor[1]){
+      curColor[1] = curColor[1] + step[1];
+      toSkipG += carryOver[1];
+      
+      if(toSkipG >= 1.0){
+        curColor[1]++;
+        toSkipG--;
+      }
+      if(toSkipG <= -1.0){
+        curColor[1]--;
+        toSkipG++;
+      }    
+    }
+   if(tgtColor[2] != curColor[2]){
+      curColor[2] = curColor[2] + step[2];
+      
+      toSkipB += carryOver[2];
+    
+      if(toSkipB >= 1.0){
+        curColor[2]++;
+        toSkipB--;
+      }
+      if(toSkipB <= -1.0){
+        curColor[2]--;
+        toSkipB++;
+      }
+  	} 
 }

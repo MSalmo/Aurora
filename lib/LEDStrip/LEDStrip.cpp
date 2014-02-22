@@ -3,12 +3,13 @@
  * Class Declarations
  */
 using namespace std;
-LEDStrip::LEDStrip(){
-	initialize();
+LEDStrip::LEDStrip(int nLEDs){
+	initialize(nLEDs);
 }
 LEDStrip::~LEDStrip(){
 }
-void LEDStrip::initialize(){
+void LEDStrip::initialize(int nLEDs){
+	/* Initialize the inactive and active LED arrays here */
 	fadeAllToBlack();
 	reColorize();
 }
@@ -46,4 +47,9 @@ int LEDStrip::getActiveLEDIndex(int ledNum){
 void LEDStrip::processStep(){
 		// Here we will iterate through each LED on the active list
       // and process each step with respect to their individual slopes.
+		ActiveLEDInfo *iter;
+}
+void LEDStrip::fadeAllToBlack(){
+}
+void LEDStrip::reColorize(){
 }

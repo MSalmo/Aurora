@@ -121,17 +121,6 @@ void colorShiftTo(uint8_t* colorInfo, int mSecs){
   activeLED.setTargetColor((uint32_t)colorInfo);
   activeLED.setStepValues();
 
-  /*int *deltas = new int[3];
-  
-  activeLED.curColor[2] = curColor % 256;        //Old Blue Value
-  deltas[2] = (int)colorInfo[2] - (int)activeLED.curColor[2];
-  
-  activeLED.curColor[1] = (curColor >> 8) % 256; //Old Green Value
-  deltas[1] = (int)colorInfo[1] - (int)activeLED.curColor[1];
-  
-  activeLED.curColor[0] = (curColor >> 16) % 256;//Old Red Value
-  deltas[0] = (int)colorInfo[0] - (int)activeLED.curColor[0];
-*/
   if(debug){  
     Serial.print("OldRED=");
     Serial.print(activeLED.curColor[0]);
@@ -175,46 +164,7 @@ void colorShiftTo(uint8_t* colorInfo, int mSecs){
   double toSkipR = 0.0f;
   uint32_t targetColor = strip.Color(colorInfo[0], colorInfo[1], colorInfo[2]);
   while( activeLED.tgtColorAsUINT32 != strip.getPixelColor(colorInfo[3])){
-    if(activeLED.tgtColor[0] != activeLED.curColor[0]){
-      activeLED.curColor[0] = activeLED.curColor[0] + activeLED.step[0];
-      
-      toSkipR += activeLED.carryOver[0];
-      if(toSkipR >= 1.0){
-        activeLED.curColor[0]++;
-        toSkipR--;
-      }
-      if(toSkipR <= -1.0){
-        activeLED.curColor[0]--;
-        toSkipR++;
-      }
-    }
-    if(colorInfo[1] != activeLED.curColor[1]){
-      activeLED.curColor[1] = activeLED.curColor[1] + activeLED.step[1];
-      toSkipG += activeLED.carryOver[1];
-      
-      if(toSkipG >= 1.0){
-        activeLED.curColor[1]++;
-        toSkipG--;
-      }
-      if(toSkipG <= -1.0){
-        activeLED.curColor[1]--;
-        toSkipG++;
-      }    
-    }
-    if(colorInfo[2] != activeLED.curColor[2]){
-      activeLED.curColor[2] = activeLED.curColor[2] + activeLED.step[2];
-      
-      toSkipB += activeLED.carryOver[2];
-    
-      if(toSkipB >= 1.0){
-        activeLED.curColor[2]++;
-        toSkipB--;
-      }
-      if(toSkipB <= -1.0){
-        activeLED.curColor[2]--;
-        toSkipB++;
-      }
-    }
+		activeLED.processStep();
     if(debug){
       Serial.print("NewRED=");
       Serial.print(activeLED.curColor[0]);
