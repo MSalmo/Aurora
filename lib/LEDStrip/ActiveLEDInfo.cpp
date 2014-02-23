@@ -63,41 +63,41 @@ void ActiveLEDInfo::processStep(){
 	if(tgtColor[0] != curColor[0]){
       curColor[0] = curColor[0] + step[0];
       
-      toSkipR += carryOver[0];
-      if(toSkipR >= 1.0){
+      carryOver[0] += step[0];
+      if(carryOver[0] >= 1.0){
         curColor[0]++;
-        toSkipR--;
+        carryOver[0]--;
       }
-      if(toSkipR <= -1.0){
+      if(carryOver[0] <= -1.0){
         curColor[0]--;
-        toSkipR++;
+        carryOver[0]++;
       }
     }
     if(tgtColor[1] != curColor[1]){
       curColor[1] = curColor[1] + step[1];
-      toSkipG += carryOver[1];
+      carryOver[1] += carryOver[1];
       
-      if(toSkipG >= 1.0){
+      if(carryOver[1] >= 1.0){
         curColor[1]++;
-        toSkipG--;
+        carryOver[1]--;
       }
-      if(toSkipG <= -1.0){
+      if(carryOver[1] <= -1.0){
         curColor[1]--;
-        toSkipG++;
+        carryOver[1]++;
       }    
     }
    if(tgtColor[2] != curColor[2]){
       curColor[2] = curColor[2] + step[2];
       
-      toSkipB += carryOver[2];
+      carryOver[2] += carryOver[2];
     
-      if(toSkipB >= 1.0){
+      if(carryOver[2] >= 1.0){
         curColor[2]++;
-        toSkipB--;
+        carryOver[2]--;
       }
-      if(toSkipB <= -1.0){
+      if(carryOver[2] <= -1.0){
         curColor[2]--;
-        toSkipB++;
+        carryOver[2]++;
       }
   	} 
 }
