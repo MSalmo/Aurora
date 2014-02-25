@@ -159,12 +159,9 @@ void colorShiftTo(uint8_t* colorInfo, int mSecs){
     Serial.print(" CarryVal(Blue)=");
     Serial.println(activeLED.carryOver[2]);
   }
-  double toSkipB = 0.0f;
-  double toSkipG = 0.0f;
-  double toSkipR = 0.0f;
   uint32_t targetColor = strip.Color(colorInfo[0], colorInfo[1], colorInfo[2]);
   while( activeLED.tgtColorAsUINT32 != strip.getPixelColor(colorInfo[3])){
-		activeLED.processStep();
+    activeLED.processStep();
     if(debug){
       Serial.print("NewRED=");
       Serial.print(activeLED.curColor[0]);
