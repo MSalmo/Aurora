@@ -8,6 +8,8 @@
 	#include "LEDInfo.h"
 	#ifdef __WIN32
 	#endif
+	#ifdef __WIN64
+	#endif
 	#ifdef __linux
 		#include <highgui.h>
 		#include <boost/asio.hpp>
