@@ -1,7 +1,7 @@
 #include "LEDInfo.h"
-/* ActiveLEDInfo Declarations */
+/* LEDInfo Declarations */
 
-ActiveLEDInfo::ActiveLEDInfo(){
+LEDInfo::LEDInfo(){
 	step = (float*)malloc(3*sizeof(float));
 	deltas = (float*)malloc(3*sizeof(float));
 	carryOver = (float*)malloc(3*sizeof(float));
@@ -9,14 +9,14 @@ ActiveLEDInfo::ActiveLEDInfo(){
 	isActive = false;
 }
 
-ActiveLEDInfo::~ActiveLEDInfo(){
+LEDInfo::~LEDInfo(){
 	free(curColor);
 	free(step);
 	free(deltas);
 	free(carryOver);
 }
 
-void ActiveLEDInfo::setTargetColor(uint32_t colorInfo) {
+void LEDInfo::setTargetColor(uint32_t colorInfo) {
 		if(tgtColor != NULL)
 			free(tgtColor);
 		tgtColor=new uint8_t[3];
@@ -26,10 +26,17 @@ void ActiveLEDInfo::setTargetColor(uint32_t colorInfo) {
 		tgtColor[2] = (colorInfo >> 16) % 256;	//Red
 
 		tgtColorAsUINT32 = colorInfo;
+		
+		if((curColor[0] != tgtColor[0]) &&
+		   (curColor[1] != tgtColor[1]) &&
+		   (curColor[2] != tgtColor[2])){
+			isActive = true;
+			setStepValues();
+		}
 
 }
 
-void ActiveLEDInfo::setStepValues() {
+void LEDInfo::setStepValues() {
   
   		//curColor[2] = curColor % 256;        //Old Blue Value
   		deltas[2] = (int)tgtColor[2] - (int)curColor[2];
@@ -62,45 +69,29 @@ void ActiveLEDInfo::setStepValues() {
   		if(carryValB < 0)
     		step[2] = 0 - step[2]; 
 }
-void ActiveLEDInfo::processStep(){
-	if(tgtColor[0] != curColor[0]){
-      curColor[0] = curColor[0] + step[0];
-      
-      carryOver[0] += step[0];
-      if(carryOver[0] >= 1.0){
-        curColor[0]++;
-        carryOver[0]--;
-      }
-      if(carryOver[0] <= -1.0){
-        curColor[0]--;
-        carryOver[0]++;
-      }
-    }
-    if(tgtColor[1] != curColor[1]){
-      curColor[1] = curColor[1] + step[1];
-      carryOver[1] += carryOver[1];
-      
-      if(carryOver[1] >= 1.0){
-        curColor[1]++;
-        carryOver[1]--;
-      }
-      if(carryOver[1] <= -1.0){
-        curColor[1]--;
-        carryOver[1]++;
-      }    
-    }
-   if(tgtColor[2] != curColor[2]){
-      curColor[2] = curColor[2] + step[2];
-      
-      carryOver[2] += carryOver[2];
-    
-      if(carryOver[2] >= 1.0){
-        curColor[2]++;
-        carryOver[2]--;
-      }
-      if(carryOver[2] <= -1.0){
-        curColor[2]--;
-        carryOver[2]++;
-      }
-  	} 
+
+void LEDInfo::processStep(){
+	if((curColor[0] == tgtColor[0]) &&
+	   (curColor[1] == tgtColor[1]) &&
+	   (curColor[2] == tgtColor[2])){
+		isActive = false;
+	}
+
+	if((isActive){
+		for(int i = 0 ; i < 3; i++){
+			if(tgtColor[i] != curColor[i]){
+				curColor[i] = curColor[i] + step[i];
+				carryOver[i] += step[i];
+				if(carryOver[i] >= 1.0){
+					curColor[i]++;
+					carryOver[i]--;
+				}
+			
+				if(carryOver[i] <= -1.0){
+					curColor[i]--;
+					carryOver[i]++;
+				}
+			}
+		}
+	}
 }

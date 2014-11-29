@@ -5,17 +5,17 @@
 	#endif
 	#include <Adafruit_NeoPixel.h>
 #define LEDINFO_H
-class ActiveLEDInfo : public LEDInfo {
+class LEDInfo : public LEDInfo {
 	private:
 		double* step;
 		float* deltas;
 		float* carryOver;
+		void setStepValues();
 
 	public:
-		ActiveLEDInfo();
-		~ActiveLEDInfo();
+		LEDInfo();
+		~LEDInfo();
 		void setTargetColor(uint32_t);
-		void setStepValues();
 		void processStep();
 
 		uint8_t ledNum;
