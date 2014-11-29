@@ -1,13 +1,16 @@
-#include "ActiveLEDInfo.h"
+#include "LEDInfo.h"
 /* ActiveLEDInfo Declarations */
 
 ActiveLEDInfo::ActiveLEDInfo(){
-	step = new double[3];
-	deltas = new float[3];
-	carryOver = new float[3];
+	step = (float*)malloc(3*sizeof(float));
+	deltas = (float*)malloc(3*sizeof(float));
+	carryOver = (float*)malloc(3*sizeof(float));
+
+	isActive = false;
 }
 
 ActiveLEDInfo::~ActiveLEDInfo(){
+	free(curColor);
 	free(step);
 	free(deltas);
 	free(carryOver);
