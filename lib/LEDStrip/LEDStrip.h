@@ -13,22 +13,15 @@
 
 class LEDStrip {
 	private:
-		int nLEDs, nActive, nInactive, arduino_fd;
-		LEDInfo* inactiveLEDs;
-		ActiveLEDInfo* activeLEDs;
-		ActiveLEDInfo* searchActive(int, int);
-		LEDInfo* searchInactive(int);
-		int getActiveLEDIndex(int);
+		int nLEDs, arduino_fd;
+		LEDInfo* leds;
 		void initialize(int);
-		int moveToActive(int);
-		int moveToInactive(int);
 		struct termios old_io, new_io;
 		void processStep();
+		Adafruit_NeoPixel strip;
 	public:
 		LEDStrip(int);
 		~LEDStrip();
-		ActiveLEDInfo* getActiveLEDs();
-		LEDInfo* getInactiveLEDs();
 		void setLEDtoColor(LEDInfo*, uint8_t, uint8_t, uint8_t);
 };
 #endif

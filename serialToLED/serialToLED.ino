@@ -9,8 +9,7 @@
 #include "Event.h"
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
-ActiveLEDInfo* activeStart;
-LEDInfo* inactiveStart;
+LEDInfo* leds;
 
 int pinRangeStart = 0;
 int pinRangeStop = 0;

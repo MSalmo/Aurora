@@ -3,7 +3,6 @@
 		#include <sys/types.h>
 		#include <inttypes.h>
 	#endif
-	#include <Adafruit_NeoPixel.h>
 #define LEDINFO_H
 class LEDInfo : public LEDInfo {
 	private:
@@ -17,6 +16,7 @@ class LEDInfo : public LEDInfo {
 		~LEDInfo();
 		void setTargetColor(uint32_t);
 		void processStep();
+		
 
 		uint8_t ledNum;
 		uint8_t* curColor;
