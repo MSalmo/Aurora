@@ -1,7 +1,10 @@
 Desktop LED Ambience Project by Malak Salmo
+if you have any questions about this project, contact me at:
+mpsalmo@alumni.csupomona.edu
 
-This project makes use of the Arduino Timer library, credits to Simon Monk and Jack Christensen.
-Timer Library for Arduino
-Author:  Simon Monk
-Contact: evilgeniusauthor@gmail.com
+The serialToLED.ino file should be uploaded to your Arduino.
+
+This project currently requires the use of the Adafruit_NeoPixel LED strip libraries, created by Adafruit Industries in order to function. You can find this library along with installation instructions at:
+https://github.com/adafruit/Adafruit_Neopixel
+
 License: GNU LGPL 2.1+
