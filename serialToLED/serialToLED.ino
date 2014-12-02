@@ -1,15 +1,7 @@
 #include <LEDStrip.h>
-#include <LEDInfo.h>
-#include <ActiveLEDInfo.h>
-
 #include <Adafruit_NeoPixel.h>
 
-
-#include "Timer.h"
-#include "Event.h"
-
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_GRB + NEO_KHZ800);
-LEDInfo* leds;
+LEDStrip ledStrip = LEDStrip(240);
 
 int pinRangeStart = 0;
 int pinRangeStop = 0;
@@ -23,8 +15,6 @@ void setup(){
   
   Serial.print("Desktop LED Ambience\n");
   Serial.setTimeout(1000);
-  strip.begin();
-  strip.show();
 }
 
 void loop(){  
@@ -113,8 +103,9 @@ void loop(){
     }
   }  
 }
+
 //Color shift algorithm that calculates the slope and processes the step.
-//TODO: make this return a float array representing the slope values for the RGB LED
+//TODO: Deprecate and remove this function after the LEDStrip counterpart works.
 void colorShiftTo(uint8_t* colorInfo, int mSecs){
   ActiveLEDInfo activeLED = ActiveLEDInfo();
   activeLED.setTargetColor((uint32_t)colorInfo);

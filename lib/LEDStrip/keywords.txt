@@ -14,14 +14,14 @@ LEDInfo	KEYWORD1
 #######################################
 
 initialize	KEYWORD2
-isActive	KEYWORD2
 step	KEYWORD2
 deltas	KEYWORD2
+carryOver	KEYWORD2
+ledNum	KEYWORD2
 curColor	KEYWORD2
 tgtColor	KEYWORD2
 tgtColorAsUINT32	KEYWORD2
-ledNum	KEYWORD2
-carryOver	KEYWORD2
+isActive	KEYWORD2
 setTargetColor		KEYWORD2
 setStepValues	KEYWORD2
 

@@ -1,8 +1,4 @@
 #ifndef LEDINFO_H
-	#ifdef __linux__
-		#include <sys/types.h>
-		#include <inttypes.h>
-	#endif
 #define LEDINFO_H
 class LEDInfo : public LEDInfo {
 	private:

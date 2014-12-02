@@ -1,13 +1,6 @@
 #ifndef LEDSTRIP_H
 #define LEDSTRIP_H
-	#ifdef __linux
-		#include <sys/types.h>
-		#include <sys/stat.h>
-		#include <termios.h>
-		#include <fcntl.h>
-	#endif
 #include "LEDInfo.h"
-#include "ActiveLEDInfo.h"
 
 #define BAUD B115200
 

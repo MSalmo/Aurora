@@ -16,25 +16,8 @@ LEDInfo::~LEDInfo(){
 	free(carryOver);
 }
 
-void LEDInfo::setTargetColor(uint32_t colorInfo) {
-		if(tgtColor != NULL)
-			free(tgtColor);
-		tgtColor=new uint8_t[3];
+/*          Private Methods          */
 
-		tgtColor[0] = (colorInfo%256);			//Blue
-		tgtColor[1] = (colorInfo >> 8) % 256;	//Green
-		tgtColor[2] = (colorInfo >> 16) % 256;	//Red
-
-		tgtColorAsUINT32 = colorInfo;
-		
-		if((curColor[0] != tgtColor[0]) &&
-		   (curColor[1] != tgtColor[1]) &&
-		   (curColor[2] != tgtColor[2])){
-			isActive = true;
-			setStepValues();
-		}
-
-}
 
 void LEDInfo::setStepValues() {
   
@@ -70,6 +53,26 @@ void LEDInfo::setStepValues() {
     		step[2] = 0 - step[2]; 
 }
 
+/*         Public Methods          */
+void LEDInfo::setTargetColor(uint32_t colorInfo) {
+		if(tgtColor != NULL)
+			free(tgtColor);
+		tgtColor=new uint8_t[3];
+
+		tgtColor[0] = (colorInfo%256);			//Blue
+		tgtColor[1] = (colorInfo >> 8) % 256;	//Green
+		tgtColor[2] = (colorInfo >> 16) % 256;	//Red
+
+		tgtColorAsUINT32 = colorInfo;
+		
+		if((curColor[0] != tgtColor[0]) &&
+		   (curColor[1] != tgtColor[1]) &&
+		   (curColor[2] != tgtColor[2])){
+			isActive = true;
+			setStepValues();
+		}
+
+}
 void LEDInfo::processStep(){
 	if((curColor[0] == tgtColor[0]) &&
 	   (curColor[1] == tgtColor[1]) &&
