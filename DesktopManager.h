@@ -1,39 +1,26 @@
 #ifndef DESKTOPMANAGER_H
-	#include <iostream>
-	#include <string>
-	#include <cv.h>
-	#include <thread.h>
-	#include <time.h>
-	#include <vector.h>
-	#include "LEDInfo.h"
-	#ifdef __WIN32
+	#include <iostream.h>
+	#include "LEDStrip.h"
+	#ifdef __WIN32__
 	#endif
-	#ifdef __WIN64
+	#ifdef __WIN64__
 	#endif
-	#ifdef __linux
-		#include <highgui.h>
-		#include <boost/asio.hpp>
+	#ifdef __linux__
+		#include <ctime.h>
+		#include <pthread.h>
 		#include <stdlib.h>
 	#endif
-	using namespace std;
-	using namespace cv;
-	using namespace boost;
 
 	class DesktopManager {
 		private:
 			string DESKTOP_PATH;
 			Mat DESKTOP_IMAGE;
 			thread** threadPool;
-			int** curArrPixels;
 		public:
 			DesktopManager(int, time_t);
 			DesktopManager(int, char*, time_t);
 			DesktopManager(int, Mat, time_t);
 			char* getDesktopImagePath();
-			int getNumChannels();
-			int getNumRows();
-			int getNumCols();
-			int* getRandPixel();
 			int** getCurArrPixels();
 	};
 #endif

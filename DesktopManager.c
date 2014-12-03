@@ -1,8 +1,5 @@
 #include "DesktopManager.h"
 
-using namespace cv;
-using namespace std;
-using namespace boost;
 
 DesktopManager::DesktopManager(int nThreads, time_t seed=NULL){
 	srand(time(seed));
