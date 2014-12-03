@@ -1,6 +1,6 @@
 #ifndef DESKTOPMANAGER_H
-	#include <iostream.h>
 	#include "LEDStrip.h"
+	#include <CImg.h>
 	#ifdef __WIN32__
 	#endif
 	#ifdef __WIN64__
