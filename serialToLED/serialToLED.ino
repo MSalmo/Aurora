@@ -1,5 +1,4 @@
-#include <LEDStrip.h>
-#include <Adafruit_NeoPixel.h>
+#include "LEDStrip.h"
 
 LEDStrip ledStrip = LEDStrip(240);
 
@@ -51,9 +50,9 @@ void loop(){
           break;
         }
         case('r'): { //Reset all LEDs to (R,G,B)=(0,0,0)
-          for(int i = 0 ; i < strip.numPixels(); i++)
-            strip.setPixelColor(i, strip.Color(0,0,0));
-          strip.show();
+          //for(int i = 0 ; i < strip.numPixels(); i++)
+          //  strip.setPixelColor(i, strip.Color(0,0,0));
+          //strip.show();
           Serial.println("Reset!");
           Serial.flush();
           break;
@@ -87,13 +86,13 @@ void loop(){
             Serial.print("LED=");
             Serial.println(colorBytes[3]);
           }
-          uint32_t newColor = strip.Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-          strip.setPixelColor(colorBytes[3], newColor);
+          //uint32_t newColor = strip.Color(colorBytes[0], colorBytes[1], colorBytes[2]);
+          //strip.setPixelColor(colorBytes[3], newColor);
           free(colorBytes);
           break;
         }
         case('z'): { //Update the LEDs with any new values in the buffer.
-          strip.show();
+          //strip.show();
           Serial.println("Updating Lights");
           Serial.flush();
           delay(1);
@@ -107,62 +106,25 @@ void loop(){
 //Color shift algorithm that calculates the slope and processes the step.
 //TODO: Deprecate and remove this function after the LEDStrip counterpart works.
 void colorShiftTo(uint8_t* colorInfo, int mSecs){
-  ActiveLEDInfo activeLED = ActiveLEDInfo();
-  activeLED.setTargetColor((uint32_t)colorInfo);
-  activeLED.setStepValues();
+  ledStrip.setTargetColor((uint32_t)colorInfo);
+  ledStrip.setStepValues();
 
   if(debug){  
-    Serial.print("OldRED=");
-    Serial.print(activeLED.curColor[0]);
-    Serial.print(" OldGREEN=");
-    Serial.print(activeLED.curColor[1]);
-    Serial.print(" OldBLUE=");
-    Serial.println(activeLED.curColor[2]);
-
-    Serial.print("Target RED=");
-    Serial.print(activeLED.tgtColor[0]);
-    Serial.print(" Target GREEN=");
-    Serial.print(activeLED.tgtColor[1]);
-    Serial.print(" Target BLUE=");
-    Serial.println(activeLED.tgtColor[2]); 
-  
-    Serial.print("Delta RED=");
-    Serial.print(activeLED.deltas[0]);
-    Serial.print(" Delta GREEN=");
-    Serial.print(activeLED.deltas[1]);
-    Serial.print(" Delta BLUE=");
-    Serial.println(activeLED.deltas[2]); 
+    //TODO: Add new debug info here for old/new/delta/step 
   }
   
   if(debug){
-    Serial.print("StepVal(Red)=");
-    Serial.print(activeLED.step[0]);
-    Serial.print(" StepVal(Green)=");
-    Serial.print(activeLED.step[1]);
-    Serial.print(" StepVal(Blue)=");
-    Serial.println(activeLED.step[2]);
-  
-    Serial.print("CarryVal(Red)=");
-    Serial.print(activeLED.carryOver[0]);
-    Serial.print(" CarryVal(Green)=");
-    Serial.print(activeLED.carryOver[1]);
-    Serial.print(" CarryVal(Blue)=");
-    Serial.println(activeLED.carryOver[2]);
+    //TODO: Add new debug info here for current step/carry
   }
-  uint32_t targetColor = strip.Color(colorInfo[0], colorInfo[1], colorInfo[2]);
-  while( activeLED.tgtColorAsUINT32 != strip.getPixelColor(colorInfo[3])){
-    activeLED.processStep();
+  //uint32_t targetColor = strip.Color(colorInfo[0], colorInfo[1], colorInfo[2]);
+  while( /*activeLED.tgtColorAsUINT32 != strip.getPixelColor(colorInfo[3])*/true){
+    /*activeLED.processStep();*/
     if(debug){
-      Serial.print("NewRED=");
-      Serial.print(activeLED.curColor[0]);
-      Serial.print(" NewGREEN=");
-      Serial.print(activeLED.curColor[1]);
-      Serial.print(" NewBLUE=");
-      Serial.println(activeLED.curColor[2]);
+      //TODO: Add new debug code here for new values after step change.
     } 
-    uint32_t newColor = strip.Color(activeLED.curColor[0], activeLED.curColor[1], activeLED.curColor[2]);
-    strip.setPixelColor(colorInfo[3], newColor);
-    strip.show();
+    //uint32_t newColor = strip.Color(activeLED.curColor[0], activeLED.curColor[1], activeLED.curColor[2]);
+    //strip.setPixelColor(colorInfo[3], newColor);
+    //strip.show();
     delay(mSecs);
   } 
   Serial.println("Done!");
