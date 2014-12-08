@@ -1,6 +1,6 @@
 #ifndef LEDINFO_H
 #define LEDINFO_H
-class LEDInfo : public LEDInfo {
+class LEDInfo {
 	private:
 		double* step;
 		float* deltas;

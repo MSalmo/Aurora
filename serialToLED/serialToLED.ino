@@ -106,27 +106,6 @@ void loop(){
 //Color shift algorithm that calculates the slope and processes the step.
 //TODO: Deprecate and remove this function after the LEDStrip counterpart works.
 void colorShiftTo(uint8_t* colorInfo, int mSecs){
-  ledStrip.setTargetColor((uint32_t)colorInfo);
-  ledStrip.setStepValues();
-
-  if(debug){  
-    //TODO: Add new debug info here for old/new/delta/step 
-  }
-  
-  if(debug){
-    //TODO: Add new debug info here for current step/carry
-  }
-  //uint32_t targetColor = strip.Color(colorInfo[0], colorInfo[1], colorInfo[2]);
-  while( /*activeLED.tgtColorAsUINT32 != strip.getPixelColor(colorInfo[3])*/true){
-    /*activeLED.processStep();*/
-    if(debug){
-      //TODO: Add new debug code here for new values after step change.
-    } 
-    //uint32_t newColor = strip.Color(activeLED.curColor[0], activeLED.curColor[1], activeLED.curColor[2]);
-    //strip.setPixelColor(colorInfo[3], newColor);
-    //strip.show();
-    delay(mSecs);
-  } 
   Serial.println("Done!");
   Serial.flush();
 }

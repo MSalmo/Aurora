@@ -1,20 +1,21 @@
 #ifndef LEDSTRIP_H
 #define LEDSTRIP_H
+#include <stdint.h>
 #include "LEDInfo.h"
-
+#include "Adafruit_NeoPixel.h"
 #define BAUD B115200
 
 class LEDStrip {
 	private:
-		int nLEDs, arduino_fd;
 		LEDInfo* leds;
 		void initialize(int);
-		struct termios old_io, new_io;
 		void processStep();
 		Adafruit_NeoPixel strip;
 	public:
+		int nLEDs;
+
 		LEDStrip(int);
 		~LEDStrip();
-		void setLEDtoColor(LEDInfo*, uint8_t, uint8_t, uint8_t);
+		void setLEDtoColor(uint8_t, uint32_t);
 };
 #endif
