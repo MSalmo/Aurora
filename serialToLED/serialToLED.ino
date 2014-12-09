@@ -1,6 +1,6 @@
 #include "LEDStrip.h"
 
-LEDStrip ledStrip = LEDStrip(240);
+LEDStrip ledStrip = LEDStrip(240, 6);
 
 int pinRangeStart = 0;
 int pinRangeStop = 0;

@@ -1,17 +1,22 @@
 #ifndef LEDINFO_H
 #define LEDINFO_H
+
+#include <stdint.h>
+#include <stdlib.h>
+#include <math.h>
+
 class LEDInfo {
 	private:
 		double* step;
-		float* deltas;
-		float* carryOver;
-		void setStepValues();
+		double* deltas;
+		double* carryOver;
+		void setStepValues(void);
 
 	public:
-		LEDInfo();
-		~LEDInfo();
+		LEDInfo(void);
+		~LEDInfo(void);
 		void setTargetColor(uint32_t);
-		void processStep();
+		void processStep(void);
 		
 
 		uint8_t ledNum;

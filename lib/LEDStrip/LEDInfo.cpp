@@ -1,15 +1,15 @@
 #include "LEDInfo.h"
 /* LEDInfo Declarations */
 
-LEDInfo::LEDInfo(){
-	step = (float*)malloc(3*sizeof(float));
-	deltas = (float*)malloc(3*sizeof(float));
-	carryOver = (float*)malloc(3*sizeof(float));
+LEDInfo::LEDInfo(void){
+	step = (double*)malloc(3*sizeof(double));
+	deltas = (double*)malloc(3*sizeof(double));
+	carryOver = (double*)malloc(3*sizeof(double));
 
 	isActive = false;
 }
 
-LEDInfo::~LEDInfo(){
+LEDInfo::~LEDInfo(void){
 	free(curColor);
 	free(step);
 	free(deltas);
@@ -19,7 +19,7 @@ LEDInfo::~LEDInfo(){
 /*          Private Methods          */
 
 
-void LEDInfo::setStepValues() {
+void LEDInfo::setStepValues(void) {
   
   		//curColor[2] = curColor % 256;        //Old Blue Value
   		deltas[2] = (int)tgtColor[2] - (int)curColor[2];
@@ -36,9 +36,9 @@ void LEDInfo::setStepValues() {
   		int farthest = max(max(absDelta0,absDelta1),absDelta2);
   
   		//Flip the denom and the num, use modf to extract carryover.
-  		float carryValR = (1.0f*deltas[0]/farthest);
-  		float carryValG = (1.0f*deltas[1]/farthest); 
-  		float carryValB = (1.0f*deltas[2]/farthest);
+  		double carryValR = (1.0f*deltas[0]/farthest);
+  		double carryValG = (1.0f*deltas[1]/farthest); 
+  		double carryValB = (1.0f*deltas[2]/farthest);
   
   
   		carryOver[0] = modf(carryValR, &(step[0]));
@@ -73,18 +73,19 @@ void LEDInfo::setTargetColor(uint32_t colorInfo) {
 		}
 
 }
-void LEDInfo::processStep(){
+
+void LEDInfo::processStep(void){
 	if((curColor[0] == tgtColor[0]) &&
 	   (curColor[1] == tgtColor[1]) &&
-	   (curColor[2] == tgtColor[2])){
+	   (curColor[2] == tgtColor[2]))
 		isActive = false;
-	}
 
 	if((isActive){
 		for(int i = 0 ; i < 3; i++){
 			if(tgtColor[i] != curColor[i]){
-				curColor[i] = curColor[i] + step[i];
+				curColor[i] += step[i];
 				carryOver[i] += step[i];
+				
 				if(carryOver[i] >= 1.0){
 					curColor[i]++;
 					carryOver[i]--;
