@@ -3,7 +3,7 @@
 
 LEDInfo::LEDInfo(void){
 	step = (double*)malloc(3*sizeof(double));
-	deltas = (double*)malloc(3*sizeof(double));
+	deltas = (int*)malloc(3*sizeof(double));
 	carryOver = (double*)malloc(3*sizeof(double));
 
 	isActive = false;
@@ -33,7 +33,19 @@ void LEDInfo::setStepValues(void) {
 		int absDelta0 = abs(deltas[0]);
 		int absDelta1 = abs(deltas[1]);
   		int absDelta2 = abs(deltas[2]);
-  		int farthest = max(max(absDelta0,absDelta1),absDelta2);
+  		int farthest; 
+		if(absDelta0 >= absDelta1){
+			if(absDelta0 >= absDelta2)
+				farthest = absDelta0;
+			else
+				farthest = absDelta2;
+		}
+		else{
+			if(absDelta1 >= absDelta2)
+				farthest = absDelta1;
+			else
+				farthest = absDelta2;
+		}
   
   		//Flip the denom and the num, use modf to extract carryover.
   		double carryValR = (1.0f*deltas[0]/farthest);
@@ -80,7 +92,7 @@ void LEDInfo::processStep(void){
 	   (curColor[2] == tgtColor[2]))
 		isActive = false;
 
-	if((isActive){
+	if(isActive){
 		for(int i = 0 ; i < 3; i++){
 			if(tgtColor[i] != curColor[i]){
 				curColor[i] += step[i];

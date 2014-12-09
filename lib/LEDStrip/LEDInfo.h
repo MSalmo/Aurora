@@ -8,7 +8,7 @@
 class LEDInfo {
 	private:
 		double* step;
-		double* deltas;
+		int* deltas;
 		double* carryOver;
 		void setStepValues(void);
 
