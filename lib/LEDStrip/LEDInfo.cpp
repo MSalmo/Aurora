@@ -3,7 +3,7 @@
 
 LEDInfo::LEDInfo(void){
 	step = (double*)malloc(3*sizeof(double));
-	deltas = (int*)malloc(3*sizeof(double));
+	deltas = (int*)malloc(3*sizeof(int));
 	carryOver = (double*)malloc(3*sizeof(double));
 
 	isActive = false;
