@@ -45,8 +45,8 @@ void loop(){
             Serial.print("LED=");
             Serial.println(colorBytes[3]);
           }
-			 ledStrip.setLEDtoColor(colorBytes[3], colorBytes[0],
-											colorBytes[1], colorBytes[2]);
+	  ledStrip.setLEDtoColor(colorBytes[3], colorBytes[0],
+				colorBytes[1], colorBytes[2]);
 			 delay(1);
           free(colorBytes);
           break;
@@ -67,13 +67,7 @@ void loop(){
           else
             Serial.println("ENABLED");
           break;
-        }
-
-          //uint32_t newColor = strip.Color(colorBytes[0], colorBytes[1], colorBytes[2]);
-          //strip.setPixelColor(colorBytes[3], newColor);
-          free(colorBytes);
-          break;
-        }
+	}
         case('z'): { //Update the LEDs with any new values in the buffer.
           //strip.show();
           Serial.println("Updating Lights");
