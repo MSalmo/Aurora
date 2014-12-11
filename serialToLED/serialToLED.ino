@@ -22,7 +22,7 @@ void loop(){
     Serial.print("Start Byte read!");
     
     while(true){
-      while(!Serial.available());
+      while(!Serial.available())ledStrip.processStep();
       inByte = Serial.read();
       delay(1);
       switch(inByte){
@@ -30,7 +30,7 @@ void loop(){
           colorBytes = new byte[4];
           
           for(int i = 0 ; i < 4; i++){
-            while(!Serial.available());
+            while(!Serial.available()) ledStrip.processStep();
             colorBytes[0] = Serial.read();
             delay(1);
             Serial.flush();
@@ -45,7 +45,9 @@ void loop(){
             Serial.print("LED=");
             Serial.println(colorBytes[3]);
           }
-          colorShiftTo(colorBytes, 12);  
+			 ledStrip.setLEDtoColor(colorBytes[3], colorBytes[0],
+											colorBytes[1], colorBytes[2]);
+			 delay(1);
           free(colorBytes);
           break;
         }
@@ -66,26 +68,7 @@ void loop(){
             Serial.println("ENABLED");
           break;
         }
-        case('s'): { //Update the colors of an LED in the buffer.
-          colorBytes = new byte[4];
-          for (int i = 0 ; i < 4 ; i++){
-            while(!Serial.available());
-            colorBytes[i]= Serial.read();
-            delay(1);
-            
-        }
 
-          if(debug){
-            Serial.println("Set lights without updating.");
-            Serial.print("R=");
-            Serial.println(colorBytes[0]);
-            Serial.print("G=");
-            Serial.println(colorBytes[1]);
-            Serial.print("B=");
-            Serial.println(colorBytes[2]);
-            Serial.print("LED=");
-            Serial.println(colorBytes[3]);
-          }
           //uint32_t newColor = strip.Color(colorBytes[0], colorBytes[1], colorBytes[2]);
           //strip.setPixelColor(colorBytes[3], newColor);
           free(colorBytes);

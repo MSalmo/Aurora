@@ -32,7 +32,7 @@ void LEDStrip::processStep()
 					leds[i].curColor[2]);
 		setPixelColor(i, newColor);
 	}
-
+	delay(1);
 	show();
 }
 
