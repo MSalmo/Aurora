@@ -3,11 +3,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <inttypes.h>
-#include <fstream>
-#include <iostream>
-#include <time.h>
+
 #include "DesktopManager.h"
-#include <vector>
+
 #define ARDUINO "/dev/ttyACM0"
 
 using namespace std;

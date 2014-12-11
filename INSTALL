@@ -1,0 +1,5 @@
+Requirements:
+	Any Arduino capable of handling an addressable RGB LED strip.
+	GCC
+
+Simply place the "LEDStrip" folder in your Arduino libraries folder and uploand upload the sketch into your Arduino.

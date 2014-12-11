@@ -45,8 +45,8 @@ void loop(){
             Serial.print("LED=");
             Serial.println(colorBytes[3]);
           }
-	  ledStrip.setLEDtoColor(colorBytes[3], colorBytes[0],
-				colorBytes[1], colorBytes[2]);
+	  ledStrip.setLEDtoColor((uint8_t)colorBytes[3],
+				ledStrip.Color(colorBytes[0], colorBytes[1], colorBytes[2]));
 			 delay(1);
           free(colorBytes);
           break;
