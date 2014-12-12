@@ -8,23 +8,24 @@
 	#endif
 
 	#ifdef __linux__
-		#include <ctime.h>
+		#include <time.h>
 		#include <pthread.h>
+		#include <string.h>
 		#include <stdlib.h>
 		#include <CImg.h>
 		#include <termios.h>
 	#endif
 
+
 	class DesktopManager {
 		private:
 			int arduino_fd;
 			struct termios new_io, old_io;
-			string DESKTOP_PATH;
-			thread** threadPool;
+			char* DESKTOP_PATH;
+			std::thread **threadPool;
+			cimg_library::CImg<unsigned char> DESKTOP_IMAGE;
 		public:
-			DesktopManager(int, time_t);
-			DesktopManager(int, char*, time_t);
-			DesktopManager(int, Mat, time_t);
+			DesktopManager(char*, char*, int, time_t);
 			char* getDesktopImagePath();
 			int** getCurArrPixels();
 	};

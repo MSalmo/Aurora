@@ -1,8 +1,10 @@
 #include "DesktopManager.h"
 
 
-DesktopManager::DesktopManager(char* loc, int nLEDs, time_t seed=NULL){
+DesktopManager::DesktopManager(char* loc, char* imgloc, int nLEDs, time_t seed=NULL){
 	srand(time(seed));
+	image(imgloc);
+	
 	if((arduino_fd = open(loc, O_RDWR | O_NOCTTY)) < 0) {
 		perror(loc);
 		exit(EXIT_FAILURE);
@@ -25,15 +27,6 @@ DesktopManager::DesktopManager(char* loc, int nLEDs, time_t seed=NULL){
 	STARTCMD[0] = 0x30;
 	write(arduino_fd, STARTCMD, 1);
 	free(STARTCMD);
-}
-Desktopmanager::DesktopManager(int nThreads, char* imgPath, time_t seed=NULL){
-	DESKTOP_PATH = imgPath;
-	DESKTOP_IMAGE = imread(imgPath, CV_LOAD_IMAGE_COLOR);
-	srand(time(seed));
-}
-Desktopmanager::DesktopManager(int nThreads, Mat m, time_t seed=NULL){
-	DESKTOP_IMAGE(m);
-	srand(time(seed));
 }
 
 string DesktopManager::getDesktopImagePath(){

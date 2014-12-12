@@ -6,17 +6,18 @@
 
 #include "DesktopManager.h"
 
-#define ARDUINO "/dev/ttyACM0"
-
 using namespace std;
 
 struct termios old_io, new_io;
 int arduinoFD, c, res;
+char* ARDUINO;
 
 int main (int argc, char* argv[]) {
-	srand(time(NULL));
-
-	DesktopManager dm = new DesktopManager(nLEDs, argv[2]);	
+	if(argc != 4){
+		printf("USAGE %s ARDUINO_PATH IMAGE_PATH nLEDs\n", argv[0]);
+	}
+	int nLEDs = atoi(argv[3]);
+	DesktopManager dm = DesktopManager(argv[1], argv[2], nLEDs);	
 
 	while(true){
 		uint8_t* testWrite = (uint8_t*)malloc(6);
