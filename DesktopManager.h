@@ -20,7 +20,6 @@
 			int arduino_fd;
 			struct termios new_io, old_io;
 			string DESKTOP_PATH;
-			Mat DESKTOP_IMAGE;
 			thread** threadPool;
 		public:
 			DesktopManager(int, time_t);
