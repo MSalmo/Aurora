@@ -1,9 +1,9 @@
 #include "DesktopManager.h"
 
 
-DesktopManager::DesktopManager(char* loc, char* imgloc, int nLEDs, time_t seed=NULL){
-	srand(time(seed));
+DesktopManager::DesktopManager(char* loc, char* imgloc, int nLEDs){
 	image(imgloc);
+	srand(time(NULL));
 	
 	if((arduino_fd = open(loc, O_RDWR | O_NOCTTY)) < 0) {
 		perror(loc);

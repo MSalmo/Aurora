@@ -25,7 +25,7 @@
 			std::thread **threadPool;
 			cimg_library::CImg<unsigned char> DESKTOP_IMAGE;
 		public:
-			DesktopManager(char*, char*, int, time_t);
+			DesktopManager(char*, char*, int);
 			char* getDesktopImagePath();
 			int** getCurArrPixels();
 	};
