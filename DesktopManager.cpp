@@ -36,6 +36,15 @@ bool DesktopManager::sendNewestPixels(void)
 	return false;  //This is a stub for now.
 }
 
+bool DesktopManager::update(void)
+{
+	/* TODO: Make this a procedure which pulls from the image and then
+	 * updates the LED Strip accordingly
+	 */
+
+	return false; //This is a stub for now.
+}
+
 /* Public Methods */
 bool DesktopManager::loadNewImage(char* imgloc)
 {

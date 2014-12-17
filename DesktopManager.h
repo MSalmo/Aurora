@@ -23,6 +23,7 @@
 		public:
 			DesktopManager(char* , char* , int);
 			bool loadNewImage(char*);
+			bool update(void);
 
 	};
 #endif
