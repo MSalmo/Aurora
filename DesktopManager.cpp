@@ -1,7 +1,8 @@
 #include "DesktopManager.h"
 
 
-DesktopManager::DesktopManager(char* loc, char* imgloc, int nLEDs){
+DesktopManager::DesktopManager(char *loc, char *imgloc, int nLEDs)
+{
 	image(imgloc);
 	srand(time(NULL));
 	
@@ -29,25 +30,3 @@ DesktopManager::DesktopManager(char* loc, char* imgloc, int nLEDs){
 	free(STARTCMD);
 }
 
-string DesktopManager::getDesktopImagePath(){
-	return DESKTOP_PATH;
-}
-
-int DesktopManager::getNumChannels(){
-	DESKTOP_IMAGE.channels();
-}
-
-int DesktopManager::getNumRows(){
-	DESKTOP_IMAGE.rows;
-}
-
-int DesktopManager::getNumCols(){
-	DESKTOP_IMAGE.cols * DESKTOP_IMAGE.channels();
-}
-
-int* DesktopManager::getRandPixel(){
-}
-
-int** DesktopManager::getCurArrPixels(){
-	return curArrPixels;
-}

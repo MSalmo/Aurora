@@ -19,6 +19,16 @@ void LEDStrip::initialize(int nLEDs){
 	
 }
 
+int LEDStrip::getLowestCD(void)
+{
+	if(leds != NULL)
+		return leds->cooldown;
+}
+
+bool LEDStrip::replaceInPQueue(void)
+{
+}
+
 /*          Private Methods          */
 void LEDStrip::processStep()
 {
