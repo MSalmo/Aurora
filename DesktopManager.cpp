@@ -1,9 +1,9 @@
 #include "DesktopManager.h"
 
-
+/* Constructor / Destructor */
 DesktopManager::DesktopManager(char *loc, char *imgloc, int nLEDs)
 {
-	image(imgloc);
+	DESKTOP_IMAGE(*imgloc);
 	srand(time(NULL));
 	
 	if((arduino_fd = open(loc, O_RDWR | O_NOCTTY)) < 0) {
@@ -12,7 +12,7 @@ DesktopManager::DesktopManager(char *loc, char *imgloc, int nLEDs)
 	}
 
 	new_io.c_cflag = BAUD | CRTSCTS | CS8 | CLOCAL | CREAD;
-	new_io.c_iflag = IGNPAR | ICANL;
+	new_io.c_iflag = IGNPAR | ICRNL;
 	new_io.c_oflag = 0;
 	new_io.c_lflag = ICANON;
 	cfsetospeed(&new_io, BAUD);
@@ -30,3 +30,14 @@ DesktopManager::DesktopManager(char *loc, char *imgloc, int nLEDs)
 	free(STARTCMD);
 }
 
+/* Private Methods */
+bool DesktopManager::sendNewestPixels(void)
+{
+	return false;  //This is a stub for now.
+}
+
+/* Public Methods */
+bool DesktopManager::loadNewImage(char* imgloc)
+{
+	return false; //This is a stub for now.
+}

@@ -8,6 +8,9 @@
 	#include <stdlib.h>
 	#include <CImg.h>
 	#include <termios.h>
+	#include <inttypes.h>
+	#include <sys/stat.h>
+	#include <fcntl.h>
 
 
 	class DesktopManager {
@@ -16,7 +19,10 @@
 			struct termios new_io, old_io;
 			char* DESKTOP_PATH;
 			cimg_library::CImg<unsigned char> DESKTOP_IMAGE;
+			bool sendNewestPixels(void);
 		public:
 			DesktopManager(char* , char* , int);
+			bool loadNewImage(char*);
+
 	};
 #endif

@@ -1,12 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <inttypes.h>
-#include <time.h>
-
-#include "DesktopManager.h"
-
+#include "Aurora.h"
 
 struct termios old_io, new_io;
 int arduinoFD, c, res;
