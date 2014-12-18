@@ -19,17 +19,36 @@ void LEDStrip::initialize(int nLEDs){
 	
 }
 
-int LEDStrip::getLowestCD(void)
-{
-	if(leds != NULL)
-		return leds->cooldown;
-}
-
 bool LEDStrip::replaceInPQueue(void)
 {
 }
 
 /*          Private Methods          */
+
+uint8_t LEDStrip::getLowestCD(void)
+{
+	if(leds != NULL)
+		return leds->cooldown;
+}
+
+uint8_t LEDStrip::getNumLowestCD(void)
+{
+	LEDInfo* ledptr;
+	uint8_t lowestCD = getLowestCD();
+	uint8_t i = 0;
+
+	if(leds != NULL){
+		ledptr = leds;
+		while(ledptr->cooldown == lowestCD){
+			i++;
+			ledptr++;
+		}
+
+		return i;
+	}
+	return -1;
+}
+
 void LEDStrip::processStep()
 {
 	// Here we will iterate through each LED on the active list
@@ -47,6 +66,7 @@ void LEDStrip::processStep()
 }
 
 /*          Public Methods          */
+
 void LEDStrip::setLEDtoColor(uint8_t led, uint32_t tgtColor)
 {
 	leds[led].setTargetColor(tgtColor);
@@ -54,4 +74,11 @@ void LEDStrip::setLEDtoColor(uint8_t led, uint32_t tgtColor)
 
 void LEDStrip::setLEDtoColor(uint8_t led, uint8_t r, uint8_t g, uint8_t b){
 	setLEDtoColor(led, Color(r, g, b));
+}
+
+void LEDStrip::sendLEDStatus()
+{
+	uint8_t* status = (uint8_t*)malloc(2);
+	status[0] = getLowestCD();
+	status[1] = getNumLowestCD();
 }

@@ -9,13 +9,16 @@ class LEDStrip : public Adafruit_NeoPixel {
 	private:
 		LEDInfo* leds;
 		void initialize(int);
-		int getLowestCD(void);
 		bool replaceInPQueue(void);
+		uint8_t getLowestCD(void);
+		uint8_t getNumLowestCD(void);
 	public:
 		LEDStrip(uint16_t, uint8_t);
 		~LEDStrip();
 		void setLEDtoColor(uint8_t, uint32_t);
 		void setLEDtoColor(uint8_t, uint8_t, uint8_t, uint8_t);
 		void processStep();
+		void sendLEDStatus();
+
 };
 #endif
