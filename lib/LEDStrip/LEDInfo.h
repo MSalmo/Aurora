@@ -20,7 +20,6 @@ class LEDInfo {
 		
 
 		uint8_t ledNum;
-		LEDInfo* next;
 		uint8_t cooldown;
 
 		uint8_t* curColor;

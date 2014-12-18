@@ -21,6 +21,18 @@ void LEDStrip::initialize(int nLEDs){
 
 bool LEDStrip::replaceInPQueue(void)
 {
+	uint8_t lowestCD = getLowestCD();
+
+	LEDInfo* newHead = leds;
+	while( (newHead->cooldown == lowestCD) && (newHead != NULL)){
+		newHead->cooldown = rand() % 46 + 10;
+		newHead++;
+	}
+
+	//We now have an array that's not sorted any more so we shall sort
+	//by cooldown.
+
+	qsort(leds, 0, numPixels());
 }
 
 /*          Private Methods          */
@@ -63,6 +75,10 @@ void LEDStrip::processStep()
 	}
 	delay(1);
 	show();
+}
+
+void LEDStrip::qsort(LEDInfo* arr, uint8_t min, uint8_t max){
+	//We'll implement 2/3rds quicksort here
 }
 
 /*          Public Methods          */
