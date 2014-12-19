@@ -77,8 +77,18 @@ void LEDStrip::processStep()
 	show();
 }
 
-void LEDStrip::qsort(LEDInfo* arr, uint8_t min, uint8_t max){
+void LEDStrip::qsort(LEDInfo* arr, uint8_t min, uint8_t max)
+{
 	//We'll implement 2/3rds quicksort here
+	if(min > max) return; //already sorted
+
+	uint8_t pivIndex = 2*(min+max) / 3, piv = arr[pivIndex].cooldown;
+
+	qsort(arr, min, piv);
+	qsort(arr, piv+1, max);
+
+	
+	
 }
 
 /*          Public Methods          */
