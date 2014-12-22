@@ -91,6 +91,13 @@ void LEDStrip::qsort(LEDInfo* arr, uint8_t min, uint8_t max)
 	
 }
 
+void LEDStrip::swap(LEDInfo& a, LEDInfo& b)
+{
+	LEDInfo* temp;
+	temp = a;
+	a = b;
+	b = temp;
+}
 /*          Public Methods          */
 
 void LEDStrip::setLEDtoColor(uint8_t led, uint32_t tgtColor)
