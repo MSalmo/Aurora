@@ -82,7 +82,18 @@ void LEDStrip::qsort(LEDInfo* arr, uint8_t min, uint8_t max)
 	//We'll implement 2/3rds quicksort here
 	if(min > max) return; //already sorted
 
+	int j = 0;
 	uint8_t pivIndex = 2*(min+max) / 3, piv = arr[pivIndex].cooldown;
+	swap(arr[pivIndex], arr[max-1]);
+
+	for(int i = min; i < max ; i++){
+		if(arr[i].cooldown <= piv){
+			swap(arr[j], arr[i]);
+			j++;
+		}
+	}
+
+	swap (arr[max-1], arr[j]);
 
 	qsort(arr, min, piv);
 	qsort(arr, piv+1, max);
@@ -93,7 +104,7 @@ void LEDStrip::qsort(LEDInfo* arr, uint8_t min, uint8_t max)
 
 void LEDStrip::swap(LEDInfo& a, LEDInfo& b)
 {
-	LEDInfo* temp;
+	LEDInfo temp;
 	temp = a;
 	a = b;
 	b = temp;
