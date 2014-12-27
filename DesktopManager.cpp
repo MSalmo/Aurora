@@ -33,20 +33,22 @@ DesktopManager::DesktopManager(char *loc, char *imgloc, int nLEDs)
 /* Private Methods */
 bool DesktopManager::sendNewestPixels(void)
 {
-	int img_width = DESKTOP_IMAGE.width(), img_height = DESKTOP_IMAGE.height();
+	int img_width = DESKTOP_IMAGE.width(), 
+		img_height = DESKTOP_IMAGE.height();
+
 	printf("Received image dimensions: %d x %d\n", img_width, img_height);
-	char* numUpdatePixels = (char*)malloc(1);
+	char* numUpdatePixels = (char*)malloc(2);
 	if( read(arduino_fd, numUpdatePixels, 1) < 0) return false;
 
+	sleep(numUpdatePixels[1]);
 	char* newColorBuf = (char*)malloc(3*numUpdatePixels[0]);
 	
 	for(int i = 0 ; i < numUpdatePixels[0]; i += 3){
 		int rand_x = rand() % img_width, rand_y = rand() % img_height;
-		numUpdatePixels[i] = (int)DESKTOP_IMAGE(rand_x, rand_y, 0, 0);
-		numUpdatePixels[i+1] = (int)DESKTOP_IMAGE(rand_x, rand_y, 0, 1);
-		numUpdatePixels[i+2] = (int)DESKTOP_IMAGE(rand_x, rand_y, 0, 2);
+		numUpdatePixels[i] = DESKTOP_IMAGE(rand_x, rand_y, 0, 0);
+		numUpdatePixels[i+1] = DESKTOP_IMAGE(rand_x, rand_y, 0, 1);
+		numUpdatePixels[i+2] = DESKTOP_IMAGE(rand_x, rand_y, 0, 2);
 
-		//TODO: Fill newColorBuf with pixels to be sent
 	}
 
 	write(arduino_fd, newColorBuf, 3*numUpdatePixels[0]);
