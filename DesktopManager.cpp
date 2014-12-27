@@ -33,7 +33,7 @@ DesktopManager::DesktopManager(char *loc, char *imgloc, int nLEDs)
 /* Private Methods */
 bool DesktopManager::sendNewestPixels(void)
 {
-	int img_width = DESKTOP_IMAGE.dimx(), img_height = DESKTOP_IMAGE.dimy();
+	int img_width = DESKTOP_IMAGE.width(), img_height = DESKTOP_IMAGE.height();
 	printf("Received image dimensions: %d x %d\n", img_width, img_height);
 	char* numUpdatePixels = (char*)malloc(1);
 	if( read(arduino_fd, numUpdatePixels, 1) < 0) return false;

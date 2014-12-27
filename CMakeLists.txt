@@ -1,5 +1,0 @@
-cmake_minimum_required(VERSION 2.8)
-project( DesktopLEDAmbience )
-find_package( OpenCV REQUIRED )
-add_executable( DesktopLEDAmbience DesktopLEDAmbience.cpp )
-target_link_libraries( DesktopLEDAmbience ${OpenCV_LIBS} )
