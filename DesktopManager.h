@@ -11,6 +11,7 @@
 	#include <inttypes.h>
 	#include <sys/stat.h>
 	#include <fcntl.h>
+	#include <unistd.h>
 
 
 	class DesktopManager {
