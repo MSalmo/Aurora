@@ -4,12 +4,15 @@
 
 LEDStrip::LEDStrip(uint16_t nLEDs, uint8_t nPin) : 
 		Adafruit_NeoPixel(nLEDs, nPin, NEO_GRB + NEO_KHZ800) {
+	Serial.begin(9600);
+	Serial.print("Starting LEDStrip... ");
 	initialize(nLEDs);
 
 }
 LEDStrip::~LEDStrip(){
 }
 void LEDStrip::initialize(int nLEDs){
+	delay(1);
 	begin();
 	leds = (LEDInfo*)malloc(sizeof(LEDInfo) * nLEDs);
 	for(int i = 0 ; i < numPixels(); i++){

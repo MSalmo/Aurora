@@ -7,7 +7,7 @@
 #######################################
 
 LEDStrip	KEYWORD1
-LEDInfo	KEYWORD1
+LEDInfo		KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)

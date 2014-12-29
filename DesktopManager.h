@@ -16,7 +16,7 @@
 
 	class DesktopManager {
 		private:
-			int arduino_fd;
+			int arduino_fd, image_width, image_height;
 			struct termios new_io, old_io;
 			char* DESKTOP_PATH;
 			cimg_library::CImg<unsigned char> DESKTOP_IMAGE;
@@ -24,7 +24,7 @@
 		public:
 			DesktopManager(char* , char* , int);
 			bool loadNewImage(char*);
-			bool update(void);
+			bool mainLoop(void);
 
 	};
 #endif
