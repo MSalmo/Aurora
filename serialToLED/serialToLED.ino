@@ -1,7 +1,8 @@
 #include <LEDStrip.h>
 #include <Adafruit_NeoPixel.h>
 
-LEDStrip ledStrip(240,6);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_KHZ800 + NEO_RGB);
+LEDStrip ledStrip;
 
 int pinRangeStart = 0;
 int pinRangeStop = 0;
@@ -10,9 +11,10 @@ byte* colorBytes;
 boolean debug = false;
 
 void setup(){
- 	Serial.begin(115200);
-	while(!Serial);
-  
+ 	strip.begin();
+	strip.show();
+
+	ledStrip = LEDStrip(240, 6, &strip);
 	Serial.print("Desktop LED Ambience\n");
 	Serial.setTimeout(1000);
 

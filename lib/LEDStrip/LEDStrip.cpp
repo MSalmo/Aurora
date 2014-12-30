@@ -1,11 +1,17 @@
 #include "LEDStrip.h"
 
 /*          Class Declarations          */
+LEDStrip::LEDStrip(void)
+{
+}
 
-LEDStrip::LEDStrip(uint16_t nLEDs, uint8_t nPin) : 
-		Adafruit_NeoPixel(nLEDs, nPin, NEO_GRB + NEO_KHZ800) {
+LEDStrip::LEDStrip(uint16_t nLEDs, uint8_t nPin, Adafruit_NeoPixel* strp)
+{
+	strip = strp; //A hacky solution, but it should work.
 	Serial.begin(9600);
-	Serial.print("Starting LEDStrip... ");
+	while(!Serial);
+	delay(1);
+	Serial.print("Testing LEDStrip... \n");
 	initialize(nLEDs);
 
 }
@@ -13,11 +19,12 @@ LEDStrip::~LEDStrip(){
 }
 void LEDStrip::initialize(int nLEDs){
 	delay(1);
-	begin();
+	strip->begin();
+	Serial.print("Pointing to LEDStrip here.\n");
 	leds = (LEDInfo*)malloc(sizeof(LEDInfo) * nLEDs);
-	for(int i = 0 ; i < numPixels(); i++){
+	for(int i = 0 ; i < strip->numPixels(); i++){
 		leds[i] = LEDInfo();
-		leds[i].setTargetColor( Color(0,0,0) );
+		leds[i].setTargetColor( strip->Color(0,0,0) );
 	}
 	
 }
@@ -35,7 +42,7 @@ bool LEDStrip::replaceInPQueue(void)
 	//We now have an array that's not sorted any more so we shall sort
 	//by cooldown.
 
-	qsort(leds, 0, numPixels());
+	qsort(leds, 0, strip->numPixels());
 }
 
 /*          Private Methods          */
@@ -71,13 +78,13 @@ void LEDStrip::processStep()
 
 	for(int i = 0 ; i < numPixels(); i++){
 		leds[i].processStep();
-		uint32_t newColor = Color(leds[i].curColor[0],
+		uint32_t newColor = strip->Color(leds[i].curColor[0],
 					leds[i].curColor[1],
 					leds[i].curColor[2]);
-		setPixelColor(i, newColor);
+		strip->setPixelColor(i, newColor);
 	}
 	delay(1);
-	show();
+	strip->show();
 }
 
 void LEDStrip::qsort(LEDInfo* arr, uint8_t min, uint8_t max)
@@ -128,4 +135,14 @@ void LEDStrip::sendLEDStatus()
 	uint8_t* status = (uint8_t*)malloc(2);
 	status[0] = getLowestCD();
 	status[1] = getNumLowestCD();
+}
+
+uint32_t LEDStrip::Color(uint8_t r, uint8_t g, uint8_t b)
+{
+	return strip->Color(r, g, b);
+}
+
+uint16_t LEDStrip::numPixels(void)
+{
+	return strip->numPixels();
 }
