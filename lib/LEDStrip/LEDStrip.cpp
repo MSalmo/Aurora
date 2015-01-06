@@ -8,10 +8,11 @@ LEDStrip::LEDStrip(void)
 LEDStrip::LEDStrip(uint16_t nLEDs, uint8_t nPin, Adafruit_NeoPixel* strp)
 {
 	strip = strp; //A hacky solution, but it should work.
-	Serial.begin(9600);
+	Serial.begin(115200);
 	while(!Serial);
 	delay(1);
 	Serial.print("Testing LEDStrip... \n");
+	Serial.flush();
 	initialize(nLEDs);
 
 }

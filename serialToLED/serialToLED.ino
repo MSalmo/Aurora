@@ -1,5 +1,4 @@
 #include <LEDStrip.h>
-#include <Adafruit_NeoPixel.h>
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(240, 6, NEO_KHZ800 + NEO_RGB);
 LEDStrip ledStrip;
